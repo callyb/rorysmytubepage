@@ -1,0 +1,48 @@
+
+  .title {
+      padding-top: "1em";
+      font-size: "1.2em";
+  }
+
+  .avatar {
+    width: 100%;
+    padding-top: 60%; /* 16:9 Aspect Ratio */
+    position: relative; /* If you want text inside of it */
+    margin-right: 20px;
+  }
+  .video_player {
+    height: 100%;
+    padding-right: 50px;
+  }
+
+  .vid_container {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    position: relative; /* If you want text inside of it */
+  }
+
+  .vid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  @media only screen and (min-width: 1200px) {
+    .list {
+      margin-left: 15px;
+    }
+  } 
+
+  @media only screen and (min-width: 1400px) {
+    .xlarge_margin {
+      margin-left: "4em";
+    }
+  } 
+
+  @media only screen and (min-width: 1000px) {
+    .xlarge_margin {
+      margin-left: 4em;
+    }
+  } 
