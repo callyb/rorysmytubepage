@@ -19,6 +19,33 @@ export default () => {
         rel: 0
       }
     }
+      .then(console.log('success')
+      ).catch((error) => {
+        /*
+               * The request was made and the server responded with a
+               * status code that falls out of the range of 2xx
+               */
+        if (error.response) {
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+
+        } else if (error.request) {
+          /*
+           * The request was made but no response was received, `error.request`
+           * is an instance of XMLHttpRequest in the browser and an instance
+           * of http.ClientRequest in Node.js
+           */
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request and triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+
+      }
+
+      )
     )
   }
 
@@ -37,8 +64,8 @@ export default () => {
         </MDBCol>
       </MDBRow>
       <MDBRow className="pt-2">
-        <MDBCol xl="8" style={{paddingLeft: "4em"}}>
-          <VideoDetail video={selectedVideo} style={{width: "100%"}}/>
+        <MDBCol xl="8" style={{ paddingLeft: "4em" }}>
+          <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
         </MDBCol>
         <MDBCol xl="3" >
           <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
