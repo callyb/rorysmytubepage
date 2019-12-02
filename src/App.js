@@ -18,7 +18,7 @@ export default () => {
         playlistId: process.env.REACT_APP_PLAYLIST_ID,
         rel: 0
       }
-    }
+    })
       .then(console.log('success')
       ).catch((error) => {
         /*
@@ -46,7 +46,7 @@ export default () => {
       }
 
       )
-    )
+    
   }
 
   const handleSubmit = async () => {
