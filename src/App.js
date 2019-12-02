@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import youtube from "./api/youtube";
 
