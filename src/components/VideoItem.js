@@ -9,7 +9,7 @@ export default ({ video, onVideoSelect }) => {
           <img style={{ marginBottom: "15px"}} alt="thumbnail" width="200px" src={video.snippet.thumbnails.medium.url} />
       </div>
       <div className="d-flex flex-column" >
-        <p className = "py-0 my-0 ml-2 font-weight-bolder" style={{fontSize:"1.1em"}}>
+        <p className = "py-0 my-0 ml-2 font-weight-bolder list-heading">
           {video.snippet.title}
         </p>
         <p className="py-0 my-0 ml-2">

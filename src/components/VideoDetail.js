@@ -5,8 +5,15 @@ import { MDBRow, MDBCol } from "mdbreact";
 import YouTube from 'react-youtube';
 
 export default ({ video }) => {
-  if (!video) return <div>Loading...</div>;
-
+  const page = 
+  <MDBRow>
+    <div className="mx-auto">
+  <div style={{paddingTop: "2em", margin: "auto"}}>Search for anything you want on </div>
+  <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid float-left logo" alt="logo" style={{ width: '30%' }} /></div>
+  </div>
+  </MDBRow>;
+  if (!video) return page
+  
   const videoSrc = video.snippet.resourceId.videoId;
   console.log('vidSrc= ', videoSrc)
   var dateObj = new Date();
@@ -70,7 +77,7 @@ export default ({ video }) => {
         </div>
       </MDBRow>
       <MDBRow>
-        <div style={{ marginLeft: "100px" }}>
+        <div className="description">
           <p>{video.snippet.description}</p>
           <Divider style={{ marginTop: "20px", marginBottom: "20px" }} />
         </div>
