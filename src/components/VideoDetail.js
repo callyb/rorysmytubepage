@@ -26,15 +26,15 @@ export default ({ video }) => {
 
   // var newdate = month + " " + day + ", " + year;
 
-  // const opts = {
-  //   height: "100%",
-  //   width: "100%",
-  //   playerVars: { // https://developers.google.com/youtube/player_parameters
-  //     rel: 0,
-  //     showinfo: 0,
-  //     autoplay: 0
-  //   }
-  // };
+  const opts = {
+    height: "100%",
+    width: "100%",
+    playerVars: { // https://developers.google.com/youtube/player_parameters
+      rel: 0,
+      showinfo: 0,
+      autoplay: 0
+    }
+  };
   const classes = useStyles();
 
   return (
