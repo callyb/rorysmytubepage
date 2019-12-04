@@ -29,6 +29,7 @@
   right: 0;
 }
 
+<<<<<<< HEAD
 .list-heading {
   font-size: 1em;
 }
@@ -37,6 +38,11 @@
   margin-left: 100px;
   font-size: .9em;
   margin-right: 15px;
+=======
+  .list-heading {
+    font-size: 1em;
+  }
+>>>>>>> d4ffe8e... update again to fix ios9?
 
 }
 
@@ -51,6 +57,7 @@
   
 }
 
+<<<<<<< HEAD
 @media only screen and (min-width: 720px) {
   .description {
     font-size: 1em;
@@ -59,6 +66,27 @@
     font-size: 1.4em;
   }
 } 
+=======
+  .msg {
+    padding-top: 3em; 
+  }
+
+  .alt_div {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    
+  }
+
+  @media only screen and (min-width: 720px) {
+    .description {
+      font-size: 1em;
+    }
+    .msg {
+      font-size: 1.4em;
+    }
+  } 
+>>>>>>> d4ffe8e... update again to fix ios9?
 
 @media only screen and (min-width: 1000px) {
   .xlarge_margin {
@@ -66,8 +94,16 @@
   }
 } 
 
+<<<<<<< HEAD
 @media only screen and (min-width: 1200px) {
   .list {
     margin-left: 15px;
   }
 } 
+=======
+  @media only screen and (min-width: 1200px) {
+    .list {
+      margin-left: 15px;
+    }
+  } 
+>>>>>>> d4ffe8e... update again to fix ios9?
