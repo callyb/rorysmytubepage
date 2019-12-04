@@ -3,7 +3,7 @@ import { MDBCol } from "mdbreact";
 
 export default ({ video, onVideoSelect }) => {
   return (
-    <MDBCol xs="12"  className="d-flex justify-content-left" no-gutters={true} onClick={() => onVideoSelect(video)} >
+    <MDBCol xs="12"  className="d-flex justify-content-left" no-gutters="true" onClick={() => onVideoSelect(video)} >
       <div >
         {/* make image responsive!!!    */}
           <img style={{ marginBottom: "15px"}} alt="thumbnail" width="200px" src={video.snippet.thumbnails.medium.url} />
