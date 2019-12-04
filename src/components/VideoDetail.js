@@ -6,10 +6,13 @@ import YouTube from 'react-youtube';
 
 export default ({ video }) => {
   const page = 
+  
   <MDBRow>
-    <div className="mx-auto">
-  <div style={{paddingTop: "2em", margin: "auto"}}>Search for anything you want on </div>
-  <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid float-left logo" alt="logo" style={{ width: '30%' }} /></div>
+    <div className="alt_div">
+    <div className="mx-auto pl-0 text-center">
+  <div className="msg">Search for anything you want on </div>
+  <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid logo" alt="logo" style={{ width: '20%' }} /></div>
+  </div>
   </div>
   </MDBRow>;
   if (!video) return page
