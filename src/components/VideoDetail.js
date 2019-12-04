@@ -16,25 +16,25 @@ export default ({ video }) => {
   
   const videoSrc = video.snippet.resourceId.videoId;
   console.log('vidSrc= ', videoSrc)
-  var dateObj = new Date();
-  var mon = dateObj.getMonth() + 1; //months from 1-12
-  var day = dateObj.getUTCDate();
-  var year = dateObj.getUTCFullYear();
+  // var dateObj = new Date();
+  // var mon = dateObj.getMonth() + 1; //months from 1-12
+  // var day = dateObj.getUTCDate();
+  // var year = dateObj.getUTCFullYear();
 
-  var options = { month: 'long' };
-  var month = new Intl.DateTimeFormat('en-GB', options).format(mon);
+  // var options = { month: 'long' };
+  // var month = new Intl.DateTimeFormat('en-GB', options).format(mon);
 
-  var newdate = month + " " + day + ", " + year;
+  // var newdate = month + " " + day + ", " + year;
 
-  const opts = {
-    height: "100%",
-    width: "100%",
-    playerVars: { // https://developers.google.com/youtube/player_parameters
-      rel: 0,
-      showinfo: 0,
-      autoplay: 0
-    }
-  };
+  // const opts = {
+  //   height: "100%",
+  //   width: "100%",
+  //   playerVars: { // https://developers.google.com/youtube/player_parameters
+  //     rel: 0,
+  //     showinfo: 0,
+  //     autoplay: 0
+  //   }
+  // };
   const classes = useStyles();
 
   return (
@@ -56,9 +56,9 @@ export default ({ video }) => {
           <div className=" pt-2" style={{ fontWeight: "bolder", fontSize: "1.3em" }}>
             {video.snippet.title}
           </div>
-          <p style={{ color: "#2b2a2a", fontSize: "1.05em", fontWeight: "bolder" }}>
+          {/* <p style={{ color: "#2b2a2a", fontSize: "1.05em", fontWeight: "bolder" }}>
             {newdate}
-          </p>
+          </p> */}
           <Divider style={{ marginTop: "20px", marginBottom: "20px" }} />
         </MDBCol>
       </MDBRow>
