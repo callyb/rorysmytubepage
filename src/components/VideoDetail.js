@@ -6,25 +6,31 @@ import YouTube from 'react-youtube';
 
 export default ({ video }) => {
   const page = 
-  <MDBRow>
-    <div className="mx-auto">
-  <div style={{paddingTop: "2em", margin: "auto"}}>Search for anything you want on </div>
-  <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid float-left logo" alt="logo" style={{ width: '30%' }} /></div>
+  
+  <MDBRow end>
+    <MDBCol xl="6" >
+    <div className="alt_div">
+    <div className="mx-auto pl-0 text-center">
+  <div className="msg">Search for anything you want on </div>
+  <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid logo" alt="logo" /></div>
+  <div style={{paddingTop: "8em"}}><p>Note: This page needs iOS 10 or above to show the MyTube videos</p></div>
+
   </div>
+  </div>
+  </MDBCol>
   </MDBRow>;
   if (!video) return page
   
   const videoSrc = video.snippet.resourceId.videoId;
-  console.log('vidSrc= ', videoSrc)
-  // var dateObj = new Date();
-  // var mon = dateObj.getMonth() + 1; //months from 1-12
-  // var day = dateObj.getUTCDate();
-  // var year = dateObj.getUTCFullYear();
+  var dateObj = new Date();
+  var mon = dateObj.getMonth() + 1; //months from 1-12
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
 
-  // var options = { month: 'long' };
-  // var month = new Intl.DateTimeFormat('en-GB', options).format(mon);
+  var options = { month: 'long' };
+  var month = new Intl.DateTimeFormat('en-GB', options).format(mon);
 
-  // var newdate = month + " " + day + ", " + year;
+  var newdate = month + " " + day + ", " + year;
 
   const opts = {
     height: "100%",
@@ -56,9 +62,9 @@ export default ({ video }) => {
           <div className=" pt-2" style={{ fontWeight: "bolder", fontSize: "1.3em" }}>
             {video.snippet.title}
           </div>
-          {/* <p style={{ color: "#2b2a2a", fontSize: "1.05em", fontWeight: "bolder" }}>
+          <p style={{ color: "#2b2a2a", fontSize: "1.05em", fontWeight: "bolder" }}>
             {newdate}
-          </p> */}
+          </p>
           <Divider style={{ marginTop: "20px", marginBottom: "20px" }} />
         </MDBCol>
       </MDBRow>
