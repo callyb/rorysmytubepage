@@ -58,8 +58,23 @@
     }
   } 
 
-  @media only screen and (min-width: 720px) {
-    .description {
-      font-size: 1em;
+  @media only screen and (min-width: 1200px) {
+    .list {
+      margin-left: 15px;
+    }
+    .logo {
+      width: 70%
+    }
+    .msg {
+      font-size: 1.6em;
     }
   } 
+
+@media only screen and (min-width: 1600px) {
+  .xlarge_margin {
+    max-width: 90%
+  }
+  .logo {
+    width: 50%
+  }
+} 
