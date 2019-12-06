@@ -74,12 +74,6 @@ width: 20%;
     }
   } 
 
-@media only screen and (min-width: 1600px) {
-  .xlarge_margin {
-    max-width: 90%
-  }
-} 
-
   @media only screen and (min-width: 1200px) {
     .list {
       margin-left: 15px;
@@ -87,4 +81,16 @@ width: 20%;
     .logo {
       width: 70%
     }
+    .msg {
+      font-size: 1.6em;
+    }
   } 
+
+@media only screen and (min-width: 1600px) {
+  .xlarge_margin {
+    max-width: 90%
+  }
+  .logo {
+    width: 50%
+  }
+} 
