@@ -1,10 +1,14 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 
 import VideoItem from "./VideoItem";
 
 export default ({ videos, onVideoSelect }) => {
+
+  // let shuffled = videos
+  // .map((a) => ({sort: Math.random(), value: a}))
+  // .sort((a, b) => a.sort - b.sort)
+  // .map((a) => a.value)
+
   const listOfVideos = videos.map(video => (
     <VideoItem
       onVideoSelect={onVideoSelect}

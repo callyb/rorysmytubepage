@@ -22,6 +22,7 @@ export default ({ video }) => {
   if (!video) return page
   
   const videoSrc = video.snippet.resourceId.videoId;
+  
   var dateObj = new Date();
   var mon = dateObj.getMonth() + 1; //months from 1-12
   var day = dateObj.getUTCDate();

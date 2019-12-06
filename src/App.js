@@ -52,8 +52,12 @@ export default () => {
   const handleSubmit = async () => {
     const { data: { items: videos } } = await getInfo()
     console.log(videos)
-    setVideos(videos);
-    setSelectedVideo(videos[0]);
+    let shuffled = videos
+  .map((a) => ({sort: Math.random(), value: a}))
+  .sort((a, b) => a.sort - b.sort)
+  .map((a) => a.value)
+    setVideos(shuffled);
+    setSelectedVideo(shuffled[0]);
   }
 
   return (
