@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import youtube from "./api/youtube";
-
+import firebase from "../src/firebase";
+import 'firebase/firestore';
 import { SearchBar, VideoList, VideoDetail } from "./components";
 
 export default () => {
+
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
+   
   const getInfo = async () => {
     return await youtube.get('search', {
       params: {
@@ -51,15 +53,15 @@ export default () => {
 
   const handleSubmit = async () => {
     const { data: { items: videos } } = await getInfo()
-    console.log(videos)
     let shuffled = videos
   .map((a) => ({sort: Math.random(), value: a}))
   .sort((a, b) => a.sort - b.sort)
   .map((a) => a.value)
     setVideos(shuffled);
     setSelectedVideo(shuffled[0]);
-  }
-
+  
+  }; 
+  
   return (
     <MDBContainer fluid className="xlarge_margin" style={{ justifyContent: "center" }}>
       <MDBRow>
