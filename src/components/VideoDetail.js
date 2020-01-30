@@ -1,13 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Divider, Avatar, GridListTileBar } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Divider, Avatar } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { MDBRow, MDBCol, MDBIcon, MDBBtn } from "mdbreact";
+import { MDBRow, MDBCol, MDBIcon } from "mdbreact";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
 
 export default ({ video }) => {
-
   const page =
 
     <MDBRow end>
@@ -30,6 +29,9 @@ export default ({ video }) => {
   let newVideoSrc = '';
   const [countLikes, setCountlikes] = useState('');
   const [countDislikes, setCountDislikes] = useState('');
+  const [likeBtnDisabled, setLikeBtnDisabled] = useState(undefined);
+  const [dislikeBtnDisabled, setDislikeBtnDisabled] = useState(undefined);
+  console.log(videoSrc)
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
@@ -43,8 +45,8 @@ export default ({ video }) => {
     setCountDislikes(0);
     setCountlikes(0);
     checkCounts();
-    console.log('vid id = ', newVideoSrc);
-
+    setLikeBtnDisabled(undefined);
+    setDislikeBtnDisabled(undefined);
   }, [video])
 
   const checkCounts = () => {
@@ -101,12 +103,13 @@ export default ({ video }) => {
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
           likesRef.update({ likes: increment })
-          console.log('vidsrc = ', videoSrc)
         } else {
           likesRef.set({ likes: increment }) // create the document
         }
-      })
+      }).then(setLikeBtnDisabled('disabled'))
   };
+
+  let noClick = () => {};
 
   const clickedDislike = () => {
 
@@ -117,7 +120,7 @@ export default ({ video }) => {
         } else {
           likesRef.set({ dislikes: increment }) // create the document
         }
-      })
+      }).then(setDislikeBtnDisabled('disabled'))
   };
 
   return (
@@ -137,7 +140,7 @@ export default ({ video }) => {
       <MDBRow between>
         <MDBCol lg="10">
           <div className=" pt-2" style={{ fontWeight: "bolder", fontSize: "1.3em" }}>
-            {video.snippet.title}<p>{videoSrc}</p>
+            {video.snippet.title}
           </div>
           <p style={{ color: "#2b2a2a", fontSize: "1.05em", fontWeight: "bolder" }}>
             {newdate}
@@ -145,12 +148,14 @@ export default ({ video }) => {
           <Divider style={{ marginTop: "20px", marginBottom: "20px" }} />
         </MDBCol>
 
+        {/* Disabled Btn */}
         <MDBCol lg="1">
-          <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={clickedLike} />
+          <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={ !likeBtnDisabled ? clickedLike : noClick}  />
           <h6 width=".5rem">{countLikes}</h6>
         </MDBCol>
+
         <MDBCol>
-          <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={clickedDislike} />
+          <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={ !dislikeBtnDisabled ? clickedDislike : noClick} />
           <h6 width=".5rem">{countDislikes}</h6>
         </MDBCol>
       </MDBRow>

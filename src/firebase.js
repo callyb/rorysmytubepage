@@ -2,10 +2,10 @@ import * as firebase from "firebase";
 import 'firebase/firestore';
 
 const config = {
-    apiKey: "AIzaSyBcrrIsC8_N3q00BJy1NSC9ZvOWRCeb4D0",
+    apiKey: process.env.REACT_APP_FIREBASE_KEY,
     databaseURL: "https://rorysmytube.firebaseio.com",
     projectId: "rorysmytube",
-    appId: "1:942530803543:web:0be70dc558182459467012",
+    appId: process.env.REACT_APP_FIREBASE_APPID,
     measurementId: "G-YE2VM9S32Z"
 }
 

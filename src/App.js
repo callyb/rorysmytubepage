@@ -21,8 +21,7 @@ export default () => {
         rel: 0
       }
     })
-      .then(console.log('success')
-      ).catch((error) => {
+      .catch((error) => {
         /*
                * The request was made and the server responded with a
                * status code that falls out of the range of 2xx
