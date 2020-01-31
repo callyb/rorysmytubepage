@@ -138,7 +138,7 @@ export default ({ video }) => {
         </MDBCol>
       </MDBRow>
       <MDBRow between>
-        <MDBCol lg="10">
+        <MDBCol size="10">
           <div className=" pt-2" style={{ fontWeight: "bolder", fontSize: "1.3em" }}>
             {video.snippet.title}
           </div>
@@ -149,12 +149,12 @@ export default ({ video }) => {
         </MDBCol>
 
         {/* Disabled Btn */}
-        <MDBCol lg="1">
+        <MDBCol size="1">
           <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={ !likeBtnDisabled ? clickedLike : noClick}  />
           <h6 width=".5rem">{countLikes}</h6>
         </MDBCol>
 
-        <MDBCol>
+        <MDBCol size="1">
           <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={ !dislikeBtnDisabled ? clickedDislike : noClick} />
           <h6 width=".5rem">{countDislikes}</h6>
         </MDBCol>
