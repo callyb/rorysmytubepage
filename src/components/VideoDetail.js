@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Avatar } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { MDBRow, MDBCol, MDBIcon } from "mdbreact";
+import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBContainer, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
@@ -31,7 +31,6 @@ export default ({ video }) => {
   const [countDislikes, setCountDislikes] = useState('');
   const [likeBtnDisabled, setLikeBtnDisabled] = useState(undefined);
   const [dislikeBtnDisabled, setDislikeBtnDisabled] = useState(undefined);
-  console.log(videoSrc)
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
@@ -109,7 +108,7 @@ export default ({ video }) => {
       }).then(setLikeBtnDisabled('disabled'))
   };
 
-  let noClick = () => {};
+  let noClick = () => { };
 
   const clickedDislike = () => {
 
@@ -148,19 +147,36 @@ export default ({ video }) => {
           <Divider style={{ marginTop: "20px", marginBottom: "20px" }} />
         </MDBCol>
 
-        {/* Disabled Btn */}
-        <MDBCol size="1">
-          <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={ !likeBtnDisabled ? clickedLike : noClick}  />
-          <h6 width=".5rem">{countLikes}</h6>
-        </MDBCol>
+        <MDBCol size="2">
+        <MDBRow>
+          <MDBCol size="6">
+            <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={!likeBtnDisabled ? clickedLike : noClick} />
+            <h6 width=".5rem">{countLikes}</h6>
+          </MDBCol>
+          <MDBCol size="6">
+            <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={!dislikeBtnDisabled ? clickedDislike : noClick} />
+            <h6 width=".5rem">{countDislikes}</h6>
+          </MDBCol>
+          </MDBRow>
+          <MDBPopover
+            placement="left"
+            popover
+            clickable
+            id="popper1"
+          >
+            <MDBBtn gradient="blue" style={{ fontSize: 10, padding: 2, color: "white", fontWeight: "bold", marginRight: 25}}>If you like or dislike by accident</MDBBtn>
+            <div>
+              <MDBPopoverHeader>If you accidentally clicked like or dislike...</MDBPopoverHeader>
+              <MDBPopoverBody>
+                <a href="mailto:567turtle@gmail.com">...don't worry!  Just click here to email me and tell me which video you accidentally liked or disliked and about what time and day you did it and I will remove your vote</a>
+              </MDBPopoverBody>
+            </div>
+          </MDBPopover>
 
-        <MDBCol size="1">
-          <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={ !dislikeBtnDisabled ? clickedDislike : noClick} />
-          <h6 width=".5rem">{countDislikes}</h6>
         </MDBCol>
       </MDBRow>
       <MDBRow>
-        <MDBCol lg="12">
+        <MDBCol lg="10">
           <div style={{ width: "100px" }}>
             <div width="100px" className="avatar">
               <div className="vid">

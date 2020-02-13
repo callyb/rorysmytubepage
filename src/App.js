@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import youtube from "./api/youtube";
 import firebase from "../src/firebase";
+
 import 'firebase/firestore';
 import { SearchBar, VideoList, VideoDetail } from "./components";
 
