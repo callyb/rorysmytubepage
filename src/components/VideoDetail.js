@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Avatar } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBContainer, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
+import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
