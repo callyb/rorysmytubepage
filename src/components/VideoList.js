@@ -18,10 +18,7 @@ export default ({ videos, onVideoSelect }) => {
   ));
 
   return (
-    // <View style={{paddingVertical: "10px", overflowY: "scroll"}}>
-    //   {listOfVideos}
-    // </View>
- 
+  
     <div className="list">
       {listOfVideos}
     </div>
