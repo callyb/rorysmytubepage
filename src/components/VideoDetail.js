@@ -34,11 +34,16 @@ export default ({ video }) => {
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
+    const vidName = video.snippet.title;
     db.collection("mytubePage").doc(newVideoSrc || videoSrc)
       .get().then(function (doc) {
         if (!doc.exists) {
           db.collection("mytubePage").doc(newVideoSrc || videoSrc)
-            .set({ "likes": 0, "dislikes": 0 })
+            .set({ "likes": 0, "dislikes": 0, "title": vidName })
+        }
+        else if (doc.exists) {
+          db.collection("mytubePage").doc(newVideoSrc || videoSrc)
+            .set({ "title": vidName })
         }
       })
     setCountDislikes(0);
@@ -104,6 +109,7 @@ export default ({ video }) => {
           likesRef.update({ likes: increment })
         } else {
           likesRef.set({ likes: increment }) // create the document
+          console.log('likesRef = ', likesRef,)
         }
       }).then(setLikeBtnDisabled('disabled'))
   };
@@ -115,6 +121,7 @@ export default ({ video }) => {
     likesRef.get()
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
+          console.log('data = ', docSnapshot.data)
           likesRef.update({ dislikes: increment })
         } else {
           likesRef.set({ dislikes: increment }) // create the document
@@ -148,15 +155,15 @@ export default ({ video }) => {
         </MDBCol>
 
         <MDBCol size="2">
-        <MDBRow>
-          <MDBCol size="6">
-            <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={!likeBtnDisabled ? clickedLike : noClick} />
-            <h6 width=".5rem">{countLikes}</h6>
-          </MDBCol>
-          <MDBCol size="6">
-            <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={!dislikeBtnDisabled ? clickedDislike : noClick} />
-            <h6 width=".5rem">{countDislikes}</h6>
-          </MDBCol>
+          <MDBRow>
+            <MDBCol size="6">
+              <MDBIcon far icon="thumbs-up" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer" }} onClick={!likeBtnDisabled ? clickedLike : noClick} />
+              <h6 width=".5rem">{countLikes}</h6>
+            </MDBCol>
+            <MDBCol size="6">
+              <MDBIcon far icon="thumbs-down" style={{ paddingTop: 20, fontSize: 20, cursor: "pointer", }} onClick={!dislikeBtnDisabled ? clickedDislike : noClick} />
+              <h6 width=".5rem">{countDislikes}</h6>
+            </MDBCol>
           </MDBRow>
           <MDBPopover
             placement="left"
@@ -164,7 +171,7 @@ export default ({ video }) => {
             clickable
             id="popper1"
           >
-            <MDBBtn gradient="blue" style={{ fontSize: 10, padding: 2, color: "white", fontWeight: "bold", marginRight: 25}}>If you like or dislike by accident</MDBBtn>
+            <MDBBtn gradient="blue" style={{ fontSize: 10, padding: 2, color: "white", fontWeight: "bold", marginRight: 25 }}>If you like or dislike by accident</MDBBtn>
             <div>
               <MDBPopoverHeader>If you accidentally clicked like or dislike...</MDBPopoverHeader>
               <MDBPopoverBody>
