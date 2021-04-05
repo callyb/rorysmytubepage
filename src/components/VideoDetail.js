@@ -41,10 +41,7 @@ export default ({ video }) => {
           db.collection("mytubePage").doc(newVideoSrc || videoSrc)
             .set({ "likes": 0, "dislikes": 0, "title": vidName })
         }
-        else if (doc.exists) {
-          db.collection("mytubePage").doc(newVideoSrc || videoSrc)
-            .set({ "title": vidName })
-        }
+
       })
     setCountDislikes(0);
     setCountlikes(0);
