@@ -22,7 +22,7 @@ export default ({ video }) => {
       </MDBCol>
     </MDBRow>;
   if (!video) return page
-
+  // change code
   const db = firebase.firestore();
   const videoSrc = video.snippet.resourceId.videoId;
   const likesRef = db.collection("mytubePage").doc(videoSrc);
