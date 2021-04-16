@@ -17,6 +17,7 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [done, setDone] = useState(true);
 
     const getUserData = (value, type) => {
         setValues({ ...values, [type]: value })
@@ -30,7 +31,7 @@ export default () => {
 
     useEffect(() => {
         const unsubscribe =
-            db.onSnapshot((snapshot) => {
+            firebase.firestore().collection('users').onSnapshot((snapshot) => {
                 const Emails = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     email: doc.data().email
@@ -58,6 +59,7 @@ export default () => {
             db.add({ 'fname': values.fname, 'lname': values.lname, 'email': values.email })
             setLoading(false);
             setSuccess(true);
+            setDone(false);
         }
 
     };
@@ -139,10 +141,11 @@ export default () => {
                             </MDBAlert>
                         }
                     </div>
-
-                    <MDBBtn color='primary' type='submit'>
-                        Submit Form
+                    {done &&
+                        <MDBBtn color='primary' type='submit'>
+                            Submit Form
           </MDBBtn>
+                    }
 
                 </form>
             </MDBCol>
