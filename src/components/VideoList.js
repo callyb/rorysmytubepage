@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import VideoItem from "./VideoItem";
+import VideoItem from './VideoItem';
 
 export default ({ videos, onVideoSelect }) => {
 
@@ -18,9 +18,9 @@ export default ({ videos, onVideoSelect }) => {
   ));
 
   return (
-  
-    <div className="list">
+
+    <div className='list'>
       {listOfVideos}
     </div>
-    );
+  );
 }

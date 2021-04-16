@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from 'mdbreact';
+import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBContainer, MDBPopover, MDBPopoverHeader, MDBPopoverBody } from 'mdbreact';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
@@ -32,6 +32,8 @@ export default ({ video }) => {
   const [countDislikes, setCountDislikes] = useState('');
   const [likeBtnDisabled, setLikeBtnDisabled] = useState(undefined);
   const [dislikeBtnDisabled, setDislikeBtnDisabled] = useState(undefined);
+  const [modal, setModal] = useState(false);
+  const [toggle, setToggle] = useState(true);
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
@@ -153,21 +155,24 @@ export default ({ video }) => {
         </MDBCol>
 
         <MDBCol size='4' className='d-flex align-self-end justify-content-end flex-wrap'>
-          <MDBPopover
-            placement='left'
-            popover
-            clickable
-            id='popper1'
-          >
-            <MDBBtn tag='a' role='button' color='red' className='d-flex align-items-center h5' style={{ padding: 2, color: 'white', fontWeight: 'bold', paddingRight: 25, paddingLeft: 25, height: 60 }}>SUBSCRIBE</MDBBtn>
-            <div>
-              <MDBPopoverHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBPopoverHeader>
-              <MDBPopoverBody>
-                <SubscribeForm />
-              </MDBPopoverBody>
-            </div>
-          </MDBPopover>
+          <MDBContainer>
+          <MDBBtn tag='a' role='button' color='red' className='d-flex align-items-center h5' style={{ padding: 2, color: 'white', fontWeight: 'bold', paddingRight: 25, paddingLeft: 25, height: 60 }} onClick={toggle}>SUBSCRIBE</MDBBtn>
+            <MDBModal isOpen={modal} toggle={toggle}>
+              <MDBModalHeader>
+                Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!
+             
+              </MDBModalHeader>
+              <MDBModalBody>
+                <div>
+                  <SubscribeForm />
+                </div>
+              </MDBModalBody>
 
+              <MDBModalFooter>
+                <MDBBtn color="secondary" onClick={setToggle(false)}>Close</MDBBtn>
+              </MDBModalFooter>
+            </MDBModal>
+          </MDBContainer>
         </MDBCol>
 
         <MDBCol size='2'>

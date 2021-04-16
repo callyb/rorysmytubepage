@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 export default ({ onSubmit }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -16,32 +16,32 @@ export default ({ onSubmit }) => {
   }
 
   const onKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       onSubmit(searchTerm);
     }
   }
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.bar}>
+      <AppBar position='static' className={classes.bar}>
         <Toolbar>
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="primary"
-            aria-label="open drawer"
+            color='primary'
+            aria-label='open drawer'
           >
             <MenuIcon />
           </IconButton>
           <div className={classes.title}>
-            <img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className="img-fluid float-left logo" alt="logo" style={{ width: '40%' }} />
+            <img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className='img-fluid float-left logo' alt='logo' style={{ width: '40%' }} />
           </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder='Search…'
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
