@@ -6,7 +6,7 @@ import 'firebase/firestore';
 
 export default () => {
 
-    const db = firebase.firestore().collection('Users');
+    const db = firebase.firestore().collection('users');
     const [values, setValues] = useState(
         {
             fname: '',
@@ -29,10 +29,8 @@ export default () => {
     }
 
     useEffect(() => {
-        const unsubscribe = firebase
-            .firestore()
-            .collection("Users")
-            .onSnapshot((snapshot) => {
+        const unsubscribe =
+            db.onSnapshot((snapshot) => {
                 const Emails = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     email: doc.data().email
