@@ -78,6 +78,7 @@ export default () => {
                             name="fname"
                             group
                             type="text"
+                            required
                             validate
                             error="Your last name needs to be a proper name"
                             success="great - that's exactly right!"
@@ -89,6 +90,7 @@ export default () => {
                             group
                             type="text"
                             validate
+                            required
                             error="Your last name needs to be a proper name"
                             success="great - that's exactly right!"
                             getValue={value => getUserData(value, "lname")} />
@@ -99,6 +101,7 @@ export default () => {
                             group
                             type="email"
                             validate
+                            required
                             error="This is not a valid email"
                             success="great - that's exactly right!"
                             getValue={value => getUserData(value, "email")} />
