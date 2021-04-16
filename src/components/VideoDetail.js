@@ -142,7 +142,7 @@ export default ({ video }) => {
         </MDBCol>
       </MDBRow>
       <MDBRow between>
-        <MDBCol size='6'>
+        <MDBCol md='6' sm='12'>
           <div className=' pt-2' style={{ fontWeight: 'bolder', fontSize: '1.3em' }}>
             {video.snippet.title}
           </div>
@@ -152,14 +152,14 @@ export default ({ video }) => {
           <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
         </MDBCol>
 
-        <MDBCol size='4' className='d-flex align-self-end justify-content-end flex-wrap'>
+        <MDBCol md='4' className='d-flex align-self-end justify-content-end flex-wrap'>
           <MDBPopover
             placement='left'
             popover
             clickable
             id='popper1'
           >
-            <MDBBtn tag='a' role='button' color='red' className='d-flex align-items-center h5' style={{ padding: 2, color: 'white', fontWeight: 'bold', paddingRight: 25, paddingLeft: 25, height: 60 }}>SUBSCRIBE</MDBBtn>
+            <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-center h5'>SUBSCRIBE</MDBBtn>
             <div>
               <MDBPopoverHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBPopoverHeader>
               <MDBPopoverBody>
@@ -170,7 +170,7 @@ export default ({ video }) => {
 
         </MDBCol>
 
-        <MDBCol size='2'>
+        <MDBCol md='2'>
           <MDBRow>
             <MDBCol size='6'>
               <MDBIcon far icon='thumbs-up' style={{ paddingTop: 20, fontSize: 20, cursor: 'pointer' }} onClick={!likeBtnDisabled ? clickedLike : noClick} />
@@ -200,7 +200,7 @@ export default ({ video }) => {
 
       </MDBRow>
       <MDBRow>
-        <MDBCol lg='10'>
+        <MDBCol med='2'>
           <div style={{ width: '100px' }}>
             <div width='100px' className='avatar'>
               <div className='vid'>
@@ -214,15 +214,14 @@ export default ({ video }) => {
             </p>
           </div>
         </MDBCol>
-      </MDBRow>
-      <MDBRow>
-        <MDBCol lg='12'>
+        <MDBCol md='10' className="d-flex align-items-center">
           <div className='description'>
             <p>{video.snippet.description}</p>
 
             <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
           </div>
         </MDBCol>
+
       </MDBRow>
     </React.Fragment >
   );
