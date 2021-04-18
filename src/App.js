@@ -63,17 +63,17 @@ export default () => {
   };
 
   return (
-    <MDBContainer fluid className="xlarge_margin" style={{ justifyContent: "center" }}>
+    <MDBContainer fluid className="container-fluid justify-content-center">
       <MDBRow>
-        <MDBCol xl="12">
+        <MDBCol md="12">
           <SearchBar onSubmit={handleSubmit} />
         </MDBCol>
       </MDBRow>
       <MDBRow className="pt-2">
-        <MDBCol xl="8" style={{ paddingLeft: "4em" }}>
-          <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
-        </MDBCol>
-        <MDBCol xl="3" >
+
+        <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
+
+        <MDBCol md="4">
           <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
         </MDBCol>
       </MDBRow>
