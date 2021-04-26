@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBAlert } from 'mdbreact';
+import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBAlert, MDBLink } from 'mdbreact';
 import Spinner from './Spinner';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -11,7 +11,9 @@ export default () => {
         {
             fname: '',
             lname: '',
-            email: ''
+            email: '',
+            pname: '',
+            pEmail: ''
         });
     const [userEmails, setUserEmails] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -56,7 +58,7 @@ export default () => {
         ) {
             setAlert(true)
         } else {
-            db.add({ 'fname': values.fname, 'lname': values.lname, 'email': values.email })
+            db.add({ 'fname': values.fname, 'lname': values.lname, 'email': values.email, 'pname': values.pname, 'pEmail': values.pEmail })
             setLoading(false);
             setSuccess(true);
             setDone(false);
@@ -107,8 +109,9 @@ export default () => {
                             getValue={value => getUserData(value, "email")} />
                     </div>
 
-                    <div style={{ color: 'red' }}>
-                        <h6>You must get your parent's permission before subscribing to Rorysmytube (if you are under 18!)</h6>
+                    <div style={{ color: 'red', fontSize: '1em' }}>
+                        <p>If you are under 18 you must get your parent's permission for us to save your name & email before subscribing to Rorysmytube - parents see our privacy policy<a href="https://www.pixelist.design/rorysmytube/privacy" > here</a>
+                        </p>
                     </div>
                     <div className='custom-control custom-checkbox pl-3'>
                         <input
@@ -122,8 +125,31 @@ export default () => {
                             I have my parent's permission (or am over 18)
               </label>
                         <div className='invalid-feedback'>
-                            You must get your parent's permission before submitting.
-              </div>
+                            You must get your parent's permission - we will email them to tell them you subscribed (we have to by law!)
+                        </div>
+                    </div>
+                    <div>
+                        <MDBInput
+                            label="Parent Name"
+                            name="pname"
+                            group
+                            type="text"
+                            validate
+                            required
+                            error="You must give us your parent's name so we can tell them you subscribed"
+                            success="great - that's exactly right!"
+                            getValue={value => getUserData(value, "pname")} />
+
+                        <MDBInput
+                            label="ParentEmail"
+                            name="pEmail"
+                            group
+                            type="email"
+                            validate
+                            required
+                            error="This is not a valid email"
+                            success="great - that's exactly right!"
+                            getValue={value => getUserData(value, "pEmail")} />
                     </div>
                     <div>
                         {loading &&
