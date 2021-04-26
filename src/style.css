@@ -3,9 +3,12 @@
   margin-right: 15px;
 } */
 
+.wrapper {
+  padding-left: 1em;
+}
 .title {
-  padding-top: '1em';
-  font-size: '1.2em';
+  padding-top: 1em;
+  font-size: 1.2em;
 }
 
 .avatar {
@@ -71,7 +74,7 @@
   padding: 2;
   color: 'grey';
   font-weight: 'bold';
-  height: '1em';
+  height: 1em;
 }
 .subscribeBtn {
   height: 4em;
@@ -103,11 +106,14 @@
   }
 }
 
-/* @media only screen and (max-width: 567px) {
-  .date {
+@media only screen and (max-width: 567px) {
+  .spacer {
     display: none;
   }
-} */
+  .leftThumb {
+    padding-left: 2em;
+  }
+}
 
 @media only screen and (max-width: 992px) {
   .btn {

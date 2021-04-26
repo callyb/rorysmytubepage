@@ -156,8 +156,8 @@ export default ({ video }) => {
               {newdate}
             </p>
           </MDBCol>
-
-          <MDBCol sm='1' size='3' className='d-flex'>
+          <MDBCol className='spacer' size='2'></MDBCol>
+          <MDBCol sm='1' size='3' className='d-flex leftThumb'>
             <div><MDBIcon icon='thumbs-up' className="grey-text" style={{ marginRight: 5, fontSize: 20, cursor: 'pointer' }} onClick={!likeBtnDisabled ? clickedLike : noClick} /></div>
             <div> <p className="count">{countLikes}</p></div>
             <div><Divider style={{ marginBottom: '20px', width: 4 }} /></div>
@@ -168,7 +168,7 @@ export default ({ video }) => {
             <div><p className="count">{countDislikes}</p></div>
           </MDBCol>
 
-          <MDBCol sm='4' size='6' className='d-flex justify-content-center' style={{ paddingTop: 2, paddingBottom: 2, margin: 0 }}>
+          <MDBCol sm='2' size='6' className='d-flex justify-content-center' style={{ paddingTop: 2, paddingBottom: 2, margin: 0 }}>
             <MDBPopover
               placement='left'
               popover
@@ -176,10 +176,12 @@ export default ({ video }) => {
               id='popper1'
             >
               <MDBBtn outline color="none" style={{ fontSize: 10, padding: 2, color: 'grey', fontWeight: 'bold', height: '4.5em' }}>Click if you like/dislike accidentally</MDBBtn>
-              <MDBPopoverHeader>Click if you accidentally clicked like or dislike...</MDBPopoverHeader>
-              <MDBPopoverBody>
-                <a href='mailto:567turtle@gmail.com'>...don't worry!  Just click here to email me and tell me which video you accidentally liked or disliked and about what time and day you did it and I will remove your vote</a>
-              </MDBPopoverBody>
+              <div>
+                <MDBPopoverHeader>Click if you accidentally clicked like or dislike...</MDBPopoverHeader>
+                <MDBPopoverBody>
+                  <a href='mailto:567turtle@gmail.com'>...don't worry!  Just click here to email me and tell me which video you accidentally liked or disliked and about what time and day you did it and I will remove your vote</a>
+                </MDBPopoverBody>
+              </div>
             </MDBPopover>
 
           </MDBCol>
@@ -189,51 +191,54 @@ export default ({ video }) => {
             <Divider style={{ marginBottom: '20px' }} />
           </MDBCol>
         </MDBRow>
-
-        <MDBRow>
-          <MDBCol size='3'>
-            <div style={{ width: '100px' }}>
-              <div width='100px' className='avatar'>
-                <div className='vid'>
-                  <Avatar src={process.env.PUBLIC_URL + '/Green-sea-turtle.png'} className={classes.bigAvatar} />
+        <div className='wrapper'>
+          <MDBRow>
+            <MDBCol size='3'>
+              <div style={{ width: '100px' }}>
+                <div width='100px' className='avatar'>
+                  <div className='vid'>
+                    <Avatar src={process.env.PUBLIC_URL + '/Green-sea-turtle.png'} className={classes.bigAvatar} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <p className='text-left mt-3' style={{ fontWeight: 'bolder', fontSize: '1.1em' }} >
-                {'567turtle'}
-              </p>
-            </div>
-          </MDBCol>
-          <MDBCol size='5'></MDBCol>
-          <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
-            <MDBPopover
-              placement='left'
-              popover
-              clickable
-              id='popper1'
-            >
-              <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-start h5'>SUBSCRIBE</MDBBtn>
-              <MDBPopoverHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBPopoverHeader>
-              <MDBPopoverBody>
-                <SubscribeForm />
-              </MDBPopoverBody>
-            </MDBPopover>
+              <div>
+                <p className='text-left mt-3' style={{ fontWeight: 'bolder', fontSize: '1.1em' }} >
+                  {'567turtle'}
+                </p>
+              </div>
+            </MDBCol>
+            <MDBCol size='5'></MDBCol>
+            <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
+              <MDBPopover
+                placement='left'
+                popover
+                clickable
+                id='popper1'
+              >
+                <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-start h5'>SUBSCRIBE</MDBBtn>
+                <div>
+                  <MDBPopoverHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBPopoverHeader>
+                  <MDBPopoverBody>
+                    <SubscribeForm />
+                  </MDBPopoverBody>
+                </div>
+              </MDBPopover>
 
-          </MDBCol>
-        </MDBRow>
+            </MDBCol>
+          </MDBRow>
 
-        <MDBRow>
+          <MDBRow>
 
-          <MDBCol md='10' className="d-flex align-items-center">
-            <div className='description'>
-              <p>{video.snippet.description}</p>
+            <MDBCol md='10' className="d-flex align-items-center">
+              <div className='description'>
+                <p>{video.snippet.description}</p>
 
-              <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
-            </div>
-          </MDBCol>
+                <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
+              </div>
+            </MDBCol>
 
-        </MDBRow>
+          </MDBRow>
+        </div>
       </MDBCol>
     </React.Fragment >
   );
