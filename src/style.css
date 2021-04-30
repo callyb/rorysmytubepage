@@ -65,10 +65,6 @@
   margin-right: 10px;
 }
 
-.btn {
-  padding-top: 0px !important;
-}
-
 .accidentalBtn {
   font-size: 8;
   padding: 2;
@@ -79,6 +75,7 @@
 .subscribeBtn {
   height: 4em;
   padding: 1em !important;
+  width: 50%;
 }
 
 .msg {
@@ -90,15 +87,6 @@
   left: 0;
   width: 100%;
 }
-
-/* .subscribeBtn {
-  padding: 2;
-  color: 'white';
-  font-weight: 'bold';
-  padding-right: 25;
-  padding-left: 25;
-  height: 50;
-} */
 
 @media only screen and (max-width: 400px) {
   .logo {
@@ -113,10 +101,13 @@
   .leftThumb {
     padding-left: 2em;
   }
+  .subscribeBtn {
+    width: 75%;
+  }
 }
 
 @media only screen and (max-width: 992px) {
-  .btn {
+  .subscribeBtn {
     font-size: xx-small !important;
   }
   .Ripple-parent {

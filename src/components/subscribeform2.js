@@ -7,6 +7,17 @@ import $ from 'jquery';
 
 export default () => {
 
+    // $(function () {
+    //     var requiredCheckboxes = $('.browsers :checkbox[required]');
+    //     requiredCheckboxes.trigger(function () {
+    //         if (requiredCheckboxes.is(':checked')) {
+    //             requiredCheckboxes.removeAttr('required');
+    //         } else {
+    //             requiredCheckboxes.attr('required', 'required');
+    //         }
+    //     });
+    // });
+
     const db = firebase.firestore().collection('users');
     const [values, setValues] = useState(
         {
@@ -22,10 +33,7 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [Crequired, setCrequired] = useState('required');
-    const [PCrequired, setPCrequired] = useState('required');
-    const [Cdisabled, setCdisabled] = useState('');
-    const [PCdisabled, setPCdisabled] = useState('');
+    const [done, setDone] = useState(true);
 
     const getUserData = (value, type) => {
         setValues({ ...values, [type]: value })
@@ -67,6 +75,7 @@ export default () => {
             db.add({ 'fname': values.fname, 'lname': values.lname, 'email': values.email, 'consent': values.consent, 'parentConsent': values.parentConsent, 'pname': values.pname, 'pEmail': values.pEmail })
             setLoading(false);
             setSuccess(true);
+            setDone(false);
         }
 
     };
@@ -75,13 +84,9 @@ export default () => {
         const checked = e.target.checked;
         if (checked) {
             setValues({ ...values, 'consent': true })
-            setPCrequired('');
-            setPCdisabled('disabled');
             console.log('data = ', values)
         } else if (!checked) {
             setValues({ ...values, 'consent': false })
-            setPCrequired('required');
-            setPCdisabled('');
             console.log('data = ', values)
         }
     }
@@ -90,13 +95,9 @@ export default () => {
         const ischecked = e.target.checked
         if (ischecked) {
             setValues({ ...values, 'parentConsent': true })
-            setCrequired('');
-            setCdisabled('disabled');
             console.log('data = ', values)
         } else if (!ischecked) {
             setValues({ ...values, 'parentConsent': false })
-            setCrequired('required');
-            setCdisabled('');
             console.log('data = ', values)
         }
     }
@@ -107,7 +108,7 @@ export default () => {
             <MDBCol size="12">
                 <form onSubmit={handleSubmit}>
 
-                    <p className="h5 text-center mb-4">Sign in</p>
+                    <p className="h5 text-center mb-4">Subscribe</p>
                     <div className="grey-text">
 
                         <MDBInput
@@ -144,7 +145,10 @@ export default () => {
                             getValue={value => getUserData(value, "email")} />
                     </div>
 
-                    <MDBRow className="mt-5">
+                    <p style={{ color: 'red', fontSize: '1em' }}>See our privacy policy<a href="https://www.pixelist.design/rorysmytube/privacy" > here</a>
+                    </p>
+
+                    {/* <MDBRow className="mt-5">
                         <MDBCol size="1"></MDBCol>
                         <MDBCol size="10" className="border border-dark rounded py-3">
                             <div >
@@ -156,11 +160,11 @@ export default () => {
                                     type='checkbox'
                                     value=''
                                     id='consent'
+                                    group
                                     error="You need to check this box or the under 13's box"
                                     success="great - that's exactly right!"
                                     onChange={getConsent}
-                                    required={Crequired}
-                                    disabled={Cdisabled}
+                                    required
                                 />
                                 <label className='custom-control-label' htmlFor='consent'>
                                     Please use my details to update me on new videos - I am over 13
@@ -183,10 +187,11 @@ export default () => {
                                     value=''
                                     id='parentConsent'
                                     onChange={getParentConsent}
+                                    group
+                                    validate
                                     error="You need to check this box or the over 13's box"
                                     success="great - that's exactly right!"
-                                    required={PCrequired}
-                                    disabled={PCdisabled}
+                                    required
                                 />
                                 <label className='custom-control-label' htmlFor='parentConsent'>
                                     Please use my details to update me on new videos - I have my parent's permission & here is their name and email address
@@ -202,7 +207,7 @@ export default () => {
                                     group
                                     type="text"
                                     validate
-                                    required={PCrequired}
+                                    required
                                     error="You must give us your parent's name so we can tell them you subscribed"
                                     success="great - that's exactly right!"
                                     getValue={value => getUserData(value, "pname")} />
@@ -213,13 +218,13 @@ export default () => {
                                     group
                                     type="email"
                                     validate
-                                    required={PCrequired}
+                                    required
                                     error="This is not a valid email"
                                     success="great - that's exactly right!"
                                     getValue={value => getUserData(value, "pEmail")} />
                             </div>
                         </MDBCol>
-                    </MDBRow>
+                    </MDBRow> */}
                     <MDBRow>
                         <MDBCol size="12" className='d-flex justify-content-center pt-5'>
                             <div>
@@ -234,24 +239,19 @@ export default () => {
                                 }
                                 {success &&
                                     <MDBAlert color="success" dismiss >
-                                        Yay! You have succesfully subscribed with these details! Close the subscribe box to carry on.
+                                        Yay! You have succesfully subscribed with these details!
                             </MDBAlert>
                                 }
                             </div>
+                            {done &&
+                                <MDBBtn tag='a' role='button' color='primary' style={{ height: '4em' }} className='d-flex align-items-center justify-content-center h5'>
+                                    Send us your Details!
+                                </MDBBtn>
+                            }
                         </MDBCol>
                     </MDBRow>
-                    <MDBRow>
-                        <MDBCol size="12" className='d-flex justify-content-center pt-5'>
-                            <div>
-                                <MDBBtn color='primary' type='submit'>
-                                    Submit Form
-                            </MDBBtn>
-                            </div>
 
-                        </MDBCol>
-                    </MDBRow>
                 </form>
-
             </MDBCol>
         </MDBRow>
 

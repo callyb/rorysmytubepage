@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from 'mdbreact';
+import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
@@ -14,8 +14,9 @@ export default ({ video }) => {
       <div className='alt_div'>
         <div className='mx-auto pl-0 text-center'>
           <div className='msg'>Search for anything you want on </div>
+          <div style={{ marginTop: '1em' }}></div>
           <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className='img-fluid logo' alt='logo' /></div>
-          <div style={{ paddingTop: '8em' }}><p>Note: This page needs iOS 10 or above to show the MyTube videos</p></div>
+          <div style={{ paddingTop: '8em' }}><p>Note: This search needs iOS 10 or above to work on an Apple device.</p></div>
 
         </div>
       </div>
@@ -30,6 +31,7 @@ export default ({ video }) => {
   const [countDislikes, setCountDislikes] = useState('');
   const [likeBtnDisabled, setLikeBtnDisabled] = useState(undefined);
   const [dislikeBtnDisabled, setDislikeBtnDisabled] = useState(undefined);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
@@ -209,20 +211,16 @@ export default ({ video }) => {
             </MDBCol>
             <MDBCol size='5'></MDBCol>
             <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
-              <MDBPopover
-                placement='left'
-                popover
-                clickable
-                id='popper1'
-              >
-                <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-start h5'>SUBSCRIBE</MDBBtn>
-                <div>
-                  <MDBPopoverHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBPopoverHeader>
-                  <MDBPopoverBody>
-                    <SubscribeForm />
-                  </MDBPopoverBody>
-                </div>
-              </MDBPopover>
+              <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-center justify-content-center h5' onClick={() => setToggle(true)}>SUBSCRIBE</MDBBtn>
+              <MDBModal isOpen={toggle}>
+                <MDBModalHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBModalHeader>
+                <MDBModalBody><SubscribeForm /></MDBModalBody>
+                <MDBModalFooter className='d-flex'>
+                  <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>
+                    Close
+          </MDBBtn>
+                </MDBModalFooter>
+              </MDBModal>
 
             </MDBCol>
           </MDBRow>
