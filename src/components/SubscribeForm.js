@@ -3,7 +3,6 @@ import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBAlert } from 'mdbreact';
 import Spinner from './Spinner';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import $ from 'jquery';
 
 export default () => {
 
@@ -27,13 +26,14 @@ export default () => {
     const [Cdisabled, setCdisabled] = useState('');
     const [PCdisabled, setPCdisabled] = useState('');
 
-    const getUserData = (value, type) => {
-        setValues({ ...values, [type]: value })
+    const getUserData = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
         console.log('data = ', values)
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        e.target.className += ' was-validated';
         SaveUser(values)
     }
 
@@ -105,43 +105,67 @@ export default () => {
 
         <MDBRow>
             <MDBCol size="12">
-                <form onSubmit={handleSubmit}>
+                <form
+                    onSubmit={handleSubmit}
+                    className='needs-validation'
+                >
 
                     <p className="h5 text-center mb-4">Sign in</p>
                     <div className="grey-text">
-
-                        <MDBInput
-                            label="First Name"
+                        <label
+                            htmlFor='fname'
+                            className='grey-text'
+                        >
+                            First Name
+                        </label>
+                        <input
                             name="fname"
-                            group
+                            id='fname'
                             type="text"
+                            className='form-control'
                             required
-                            validate
-                            error="Your last name needs to be a proper name"
-                            success="great - that's exactly right!"
-                            getValue={value => getUserData(value, "fname")}
+                            onChange={getUserData}
                         />
-                        <MDBInput
-                            label="Last Name"
-                            name="lname"
-                            group
-                            type="text"
-                            validate
-                            required
-                            error="Your last name needs to be a proper name"
-                            success="great - that's exactly right!"
-                            getValue={value => getUserData(value, "lname")} />
+                        <div className="invalid-feedback">
+                            Please provide a valid first name.
+                        </div>
+                        <div className="valid-feedback">Looks good!</div>
 
-                        <MDBInput
-                            label="Email"
-                            name="email"
-                            group
-                            type="email"
-                            validate
+                        <label
+                            htmlFor='lname'
+                            className='grey-text'
+                        >
+                            Last name
+                        </label>
+                        <input
+                            name="lname"
+                            id='lname'
+                            type="text"
+                            className='form-control'
                             required
-                            error="This is not a valid email"
-                            success="great - that's exactly right!"
-                            getValue={value => getUserData(value, "email")} />
+                            onChange={getUserData} />
+                        <div className="invalid-feedback">
+                            Please provide a valid last name.
+                        </div>
+                        <div className="valid-feedback">Looks good!</div>
+
+                        <label
+                            htmlFor='email'
+                            className='grey-text'
+                        >
+                            Email address
+                        </label>
+                        <input
+                            name="email"
+                            id='email'
+                            type="email"
+                            required
+                            className='form-control'
+                            onChange={getUserData} />
+                        <div className="invalid-feedback">
+                            Please provide a valid email address.
+                        </div>
+                        <div className="valid-feedback">Looks good!</div>
                     </div>
 
                     <MDBRow className="mt-5">
@@ -156,8 +180,6 @@ export default () => {
                                     type='checkbox'
                                     value=''
                                     id='consent'
-                                    error="You need to check this box or the under 13's box"
-                                    success="great - that's exactly right!"
                                     onChange={getConsent}
                                     required={Crequired}
                                     disabled={Cdisabled}
@@ -183,8 +205,6 @@ export default () => {
                                     value=''
                                     id='parentConsent'
                                     onChange={getParentConsent}
-                                    error="You need to check this box or the over 13's box"
-                                    success="great - that's exactly right!"
                                     required={PCrequired}
                                     disabled={PCdisabled}
                                 />
@@ -192,31 +212,48 @@ export default () => {
                                     Please use my details to update me on new videos - I have my parent's permission & here is their name and email address
                                 </label>
                                 <div className='invalid-feedback'>
-                                    You must get your parent's permission - we will email them to tell them you subscribed (we have to by law!)
+                                    You must get your parent's permission if you're under 13, we have to check with them - it's the law! (if you're over 13, check the other box above!)
                                 </div>
                             </div>
                             <div>
-                                <MDBInput
-                                    label="Parent Name"
+                                <label
+                                    htmlFor='pname'
+                                    className='grey-text'
+                                >
+                                    Parent Name
+                                </label>
+                                <input
                                     name="pname"
-                                    group
+                                    id='pname'
                                     type="text"
-                                    validate
+                                    className='form-control'
                                     required={PCrequired}
-                                    error="You must give us your parent's name so we can tell them you subscribed"
-                                    success="great - that's exactly right!"
-                                    getValue={value => getUserData(value, "pname")} />
-
-                                <MDBInput
-                                    label="ParentEmail"
+                                    onChange={getUserData}
+                                    disabled={PCdisabled}
+                                />
+                                <div className="invalid-feedback">
+                                    Please provide a valid first name for your parent.
+                                </div>
+                                <div className="valid-feedback">Looks good!</div>
+                                <label
+                                    htmlFor='pEmail'
+                                    className='grey-text'
+                                >
+                                    Parent Email Address
+                                </label>
+                                <input
                                     name="pEmail"
-                                    group
+                                    id='pEmail'
                                     type="email"
-                                    validate
+                                    className='form-control'
                                     required={PCrequired}
-                                    error="This is not a valid email"
-                                    success="great - that's exactly right!"
-                                    getValue={value => getUserData(value, "pEmail")} />
+                                    onChange={getUserData}
+                                    disabled={PCdisabled}
+                                />
+                                <div className="invalid-feedback">
+                                    Please provide a valid email address for your parent.
+                                </div>
+                                <div className="valid-feedback">Looks good!</div>
                             </div>
                         </MDBCol>
                     </MDBRow>
