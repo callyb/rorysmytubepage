@@ -1,22 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBAlert } from 'mdbreact';
+import React, { useState, useEffect, useReducer } from 'react';
+import { MDBRow, MDBCol, MDBBtn, MDBAlert } from 'mdbreact';
 import Spinner from './Spinner';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import $ from 'jquery';
 
 export default () => {
 
     const db = firebase.firestore().collection('users');
-    const [values, setValues] = useState(
-        {
-            fname: '',
-            lname: '',
-            email: '',
-            consent: '',
-            parentConsent: '',
-            pname: '',
-            pEmail: ''
-        });
+    const initialState =
+    {
+        fname: '',
+        lname: '',
+        email: '',
+        consent: '',
+        parentConsent: '',
+        pname: '',
+        pEmail: ''
+    };
+
+    const reducer = (state, action) => {
+        if (action.type === "reset") {
+            return initialState;
+        }
+
+        const result = { ...state };
+        result[action.type] = action.value;
+        return result;
+    };
+
     const [userEmails, setUserEmails] = useState([]);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
@@ -25,16 +37,24 @@ export default () => {
     const [PCrequired, setPCrequired] = useState('required');
     const [Cdisabled, setCdisabled] = useState('');
     const [PCdisabled, setPCdisabled] = useState('');
+    // const [submitDisabled, setSubmitDisabled] = useState('');
 
     const getUserData = (e) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-        console.log('data = ', values)
+        const { name, value } = e.target;
+        dispatch({ type: name, value });
     }
 
-    const handleSubmit = (e) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { fname, lname, email, consent, parentConsent, pname, pEmail } = state;
+
+    const handleSubmit = e => {
         e.preventDefault();
         e.target.className += ' was-validated';
-        SaveUser(values)
+        SaveUser(state)
+
+        /* clear state */
+        dispatch({ type: "reset" });
+
     }
 
     useEffect(() => {
@@ -56,16 +76,19 @@ export default () => {
     }, []);
 
     const SaveUser = () => {
-        console.log('saveItem = ', values, 'Emails = ', userEmails)
-
         if (
-            userEmails.find(user => user.email === values.email)
+            userEmails.find(user => user.email === email)
 
         ) {
+            console.log('emails from db = ', userEmails, 'current email = ', email)
+            dispatch({ type: 'reset' });
             setAlert(true)
+
         } else {
-            db.add({ 'fname': values.fname, 'lname': values.lname, 'email': values.email, 'consent': values.consent, 'parentConsent': values.parentConsent, 'pname': values.pname, 'pEmail': values.pEmail })
+            db.add({ 'fname': fname, 'lname': lname, 'email': email, 'consent': consent, 'parentConsent': parentConsent, 'pname': pname, 'pEmail': pEmail })
             setLoading(false);
+            $('input').removeAttr('required');
+            $('button').prop('disabled', true);
             setSuccess(true);
         }
 
@@ -74,30 +97,30 @@ export default () => {
     const getConsent = e => {
         const checked = e.target.checked;
         if (checked) {
-            setValues({ ...values, 'consent': true })
+            dispatch({ consent: true });
             setPCrequired('');
             setPCdisabled('disabled');
-            console.log('data = ', values)
+            console.log('data = ', state)
         } else if (!checked) {
-            setValues({ ...values, 'consent': false })
+            dispatch({ consent: false })
             setPCrequired('required');
             setPCdisabled('');
-            console.log('data = ', values)
+            console.log('data = ', state)
         }
     }
 
     const getParentConsent = e => {
         const ischecked = e.target.checked
         if (ischecked) {
-            setValues({ ...values, 'parentConsent': true })
+            dispatch({ parentConsent: true })
             setCrequired('');
             setCdisabled('disabled');
-            console.log('data = ', values)
+            console.log('data = ', state)
         } else if (!ischecked) {
-            setValues({ ...values, 'parentConsent': false })
+            dispatch({ parentConsent: false })
             setCrequired('required');
             setCdisabled('');
-            console.log('data = ', values)
+            console.log('data = ', state)
         }
     }
 
@@ -108,6 +131,7 @@ export default () => {
                 <form
                     onSubmit={handleSubmit}
                     className='needs-validation'
+
                 >
 
                     <p className="h5 text-center mb-4">Sign in</p>
@@ -120,7 +144,7 @@ export default () => {
                         </label>
                         <input
                             name="fname"
-                            id='fname'
+                            value={fname}
                             type="text"
                             className='form-control'
                             required
@@ -139,7 +163,7 @@ export default () => {
                         </label>
                         <input
                             name="lname"
-                            id='lname'
+                            value={lname}
                             type="text"
                             className='form-control'
                             required
@@ -157,7 +181,7 @@ export default () => {
                         </label>
                         <input
                             name="email"
-                            id='email'
+                            value={email}
                             type="email"
                             required
                             className='form-control'
@@ -178,7 +202,7 @@ export default () => {
                                 <input
                                     className='custom-control-input'
                                     type='checkbox'
-                                    value=''
+                                    value={consent}
                                     id='consent'
                                     onChange={getConsent}
                                     required={Crequired}
@@ -202,7 +226,7 @@ export default () => {
                                 <input
                                     className='custom-control-input'
                                     type='checkbox'
-                                    value=''
+                                    value={parentConsent}
                                     id='parentConsent'
                                     onChange={getParentConsent}
                                     required={PCrequired}
@@ -224,7 +248,7 @@ export default () => {
                                 </label>
                                 <input
                                     name="pname"
-                                    id='pname'
+                                    value={pname}
                                     type="text"
                                     className='form-control'
                                     required={PCrequired}
@@ -243,7 +267,7 @@ export default () => {
                                 </label>
                                 <input
                                     name="pEmail"
-                                    id='pEmail'
+                                    value={pEmail}
                                     type="email"
                                     className='form-control'
                                     required={PCrequired}
@@ -266,12 +290,12 @@ export default () => {
                                 }
                                 {alert &&
                                     <MDBAlert color="warning" dismiss >
-                                        You have already subscribed with this email! Close this message and try with a different email.
+                                        You have already subscribed with this email!
                             </MDBAlert>
                                 }
                                 {success &&
                                     <MDBAlert color="success" dismiss >
-                                        Yay! You have succesfully subscribed with these details! Close the subscribe box to carry on.
+                                        Yay! You have succesfully subscribed! Close the subscribe box to carry on.
                             </MDBAlert>
                                 }
                             </div>
