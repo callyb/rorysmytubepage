@@ -30,14 +30,12 @@ export default () => {
     };
 
     const [userEmails, setUserEmails] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [Crequired, setCrequired] = useState('required');
     const [PCrequired, setPCrequired] = useState('required');
     const [Cdisabled, setCdisabled] = useState('');
     const [PCdisabled, setPCdisabled] = useState('');
-    // const [submitDisabled, setSubmitDisabled] = useState('');
 
     const getUserData = (e) => {
         const { name, value } = e.target;
@@ -86,7 +84,6 @@ export default () => {
 
         } else {
             db.add({ 'fname': fname, 'lname': lname, 'email': email, 'consent': consent, 'parentConsent': parentConsent, 'pname': pname, 'pEmail': pEmail })
-            setLoading(false);
             $('input').removeAttr('required');
             $('button').prop('disabled', true);
             setSuccess(true);
@@ -284,10 +281,6 @@ export default () => {
                     <MDBRow>
                         <MDBCol size="12" className='d-flex justify-content-center pt-5'>
                             <div>
-                                {loading &&
-                                    <Spinner />
-
-                                }
                                 {alert &&
                                     <MDBAlert color="warning" dismiss >
                                         You have already subscribed with this email!
