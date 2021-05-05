@@ -213,7 +213,7 @@ export default ({ video }) => {
             <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
               <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-center justify-content-center h5' onClick={() => setToggle(true)}>SUBSCRIBE</MDBBtn>
               <MDBModal isOpen={toggle}>
-                <MDBModalHeader>Subscribe to receive an email each time Turtle567 posts a new one and to get extra news!</MDBModalHeader>
+                <MDBModalHeader>Subscribe to receive an email each time Turtle567 posts a new video and to get extra news!</MDBModalHeader>
                 <MDBModalBody><SubscribeForm /></MDBModalBody>
                 <MDBModalFooter className='d-flex'>
                   <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>
