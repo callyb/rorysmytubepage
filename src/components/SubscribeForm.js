@@ -1,126 +1,185 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { MDBRow, MDBCol, MDBBtn, MDBAlert } from 'mdbreact';
-import Spinner from './Spinner';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import produce from 'immer'
+import { set, has } from "lodash";
 import $ from 'jquery';
-
 export default () => {
 
-    const db = firebase.firestore().collection('users');
+    function enhancedReducer(state, updateArg) {
+        // check if the type of update argument is a callback function
+        if (updateArg.constructor === Function) {
+            return { ...state, ...updateArg(state) };
+        }
+
+        // if the type of update argument is an object
+        if (updateArg.constructor === Object) {
+            // does the update object have _path and _value as it's keys
+            // if yes then use them to update deep object values
+            if (has(updateArg, "_path") && has(updateArg, "_value")) {
+                const { _path, _value } = updateArg;
+
+                return produce(state, draft => {
+                    set(draft, _path, _value);
+                });
+            }
+            else {
+                return { ...state, ...updateArg };
+            }
+        }
+
+    }
+
     const initialState =
     {
         fname: '',
         lname: '',
         email: '',
         consent: '',
+        PCdisabled: '',
+        Cdisabled: '',
+        PCrequired: 'required',
+        Crequired: 'required',
         parentConsent: '',
         pname: '',
-        pEmail: ''
+        pEmail: '',
+        Emails: []
     };
 
-    const reducer = (state, action) => {
-        if (action.type === "reset") {
-            return initialState;
-        }
-
-        const result = { ...state };
-        result[action.type] = action.value;
-        return result;
-    };
+    const db = firebase.firestore().collection('users');
 
     const [userEmails, setUserEmails] = useState([]);
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [Crequired, setCrequired] = useState('required');
-    const [PCrequired, setPCrequired] = useState('required');
-    const [Cdisabled, setCdisabled] = useState('');
-    const [PCdisabled, setPCdisabled] = useState('');
 
-    const getUserData = (e) => {
-        const { name, value } = e.target;
-        dispatch({ type: name, value });
-    }
+    const [state, updateState] = useReducer(enhancedReducer, initialState);
 
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const { fname, lname, email, consent, parentConsent, pname, pEmail } = state;
+    const getUserData = useCallback(({ target: { value, name, type } }) => {
+        const updatePath = name.split(".");
+        const consent = [name] == 'consent';
+        const parentConsent = [name] == 'parentConsent';
+
+        // if the input is a checkbox then use callback function to update
+        // the toggle state based on previous state
+
+        // Detect which checkbox to handle disabling the other one after clicking one & vice versa
+        if (type === 'checkbox' && (value === '' || value === 'false')) {
+
+            if (consent) {
+
+                updateState((prevState) => ({
+                    [name]: !prevState[name],
+                    'PCdisabled': 'disabled'
+
+                }))
+
+                return
+
+            }
+            else if (parentConsent) {
+                updateState((prevState) => ({
+                    [name]: !prevState[name],
+                    'Cdisabled': 'disabled'
+
+                }))
+
+                return
+
+            }
+        } else if (type === 'checkbox' && (value === true || value === 'true')) {
+
+            if (consent) {
+
+                updateState((prevState) => ({
+                    [name]: !prevState[name],
+                    'PCdisabled': '',
+                    'PCrequired': 'required'
+
+                }))
+
+                return
+
+            }
+            else if (parentConsent) {
+
+                updateState((prevState) => ({
+                    [name]: !prevState[name],
+                    'Cdisabled': '',
+                    'Crequired': 'required'
+
+                }))
+
+                return
+
+            }
+        }
+
+        // if we have to update the root level nodes in the form
+        if (updatePath.length === 1) {
+            const [key] = updatePath;
+
+            updateState({
+                [key]: value
+            });
+        }
+
+        // if we have to update nested nodes in the form object
+        // use _path and _value to update them.
+        if (updatePath.length === 2) {
+            updateState({
+                _path: updatePath,
+                _value: value
+            });
+        }
+
+    }, [],
+        console.log('state = ', state),
+
+    );
+
+    // const getUserData = (e) => {
+    //     const { name, value } = e.target;
+    //     dispatch({ type: name, value });
+    // }
 
     const handleSubmit = e => {
         e.preventDefault();
         e.target.className += ' was-validated';
         SaveUser(state)
-
-        /* clear state */
-        dispatch({ type: "reset" });
-
     }
 
+    // Save state to firebase
     useEffect(() => {
         const unsubscribe =
             firebase.firestore().collection('users').onSnapshot((snapshot) => {
                 const Emails = snapshot.docs.map((doc) => ({
                     id: doc.id,
                     email: doc.data().email
-
                 }))
                 setUserEmails(Emails);
-            }, () => {
 
             }, (error) => { console.log(error.message) }
             )
-
         return () => unsubscribe();
-
     }, []);
 
     const SaveUser = () => {
+        console.log('emails at beginning of saveuser = ', userEmails)
         if (
-            userEmails.find(user => user.email === email)
+            userEmails.find(user => user.email === state.email)
 
         ) {
-            console.log('emails from db = ', userEmails, 'current email = ', email)
-            dispatch({ type: 'reset' });
+            console.log('emails from db = ', userEmails, 'current email = ', state.email)
             setAlert(true)
-
         } else {
-            db.add({ 'fname': fname, 'lname': lname, 'email': email, 'consent': consent, 'parentConsent': parentConsent, 'pname': pname, 'pEmail': pEmail })
+            firebase.firestore().collection('users').add({ state })
             $('input').removeAttr('required');
             $('button').prop('disabled', true);
             setSuccess(true);
         }
 
     };
-
-    const getConsent = e => {
-        const checked = e.target.checked;
-        if (checked) {
-            dispatch({ consent: true });
-            setPCrequired('');
-            setPCdisabled('disabled');
-            console.log('data = ', state)
-        } else if (!checked) {
-            dispatch({ consent: false })
-            setPCrequired('required');
-            setPCdisabled('');
-            console.log('data = ', state)
-        }
-    }
-
-    const getParentConsent = e => {
-        const ischecked = e.target.checked
-        if (ischecked) {
-            dispatch({ parentConsent: true })
-            setCrequired('');
-            setCdisabled('disabled');
-            console.log('data = ', state)
-        } else if (!ischecked) {
-            dispatch({ parentConsent: false })
-            setCrequired('required');
-            setCdisabled('');
-            console.log('data = ', state)
-        }
-    }
-
     return (
 
         <MDBRow>
@@ -141,7 +200,7 @@ export default () => {
                         </label>
                         <input
                             name="fname"
-                            value={fname}
+                            value={state.fname}
                             type="text"
                             className='form-control'
                             required
@@ -160,7 +219,7 @@ export default () => {
                         </label>
                         <input
                             name="lname"
-                            value={lname}
+                            value={state.lname}
                             type="text"
                             className='form-control'
                             required
@@ -178,7 +237,7 @@ export default () => {
                         </label>
                         <input
                             name="email"
-                            value={email}
+                            value={state.email}
                             type="email"
                             required
                             className='form-control'
@@ -199,11 +258,13 @@ export default () => {
                                 <input
                                     className='custom-control-input'
                                     type='checkbox'
-                                    value={consent}
+                                    value={state.consent}
                                     id='consent'
-                                    onChange={getConsent}
-                                    required={Crequired}
-                                    disabled={Cdisabled}
+                                    name='consent'
+                                    onChange={getUserData}
+                                    checked={state.consent}
+                                    required={state.Crequired}
+                                    disabled={state.Cdisabled}
                                 />
                                 <label className='custom-control-label' htmlFor='consent'>
                                     Please use my details to update me on new videos - I am over 13
@@ -223,11 +284,13 @@ export default () => {
                                 <input
                                     className='custom-control-input'
                                     type='checkbox'
-                                    value={parentConsent}
+                                    value={state.parentConsent}
                                     id='parentConsent'
-                                    onChange={getParentConsent}
-                                    required={PCrequired}
-                                    disabled={PCdisabled}
+                                    name='parentConsent'
+                                    onChange={getUserData}
+                                    checked={state.ParentConsent}
+                                    required={state.PCrequired}
+                                    disabled={state.PCdisabled}
                                 />
                                 <label className='custom-control-label' htmlFor='parentConsent'>
                                     Please use my details to update me on new videos - I have my parent's permission & here is their name and email address
@@ -245,12 +308,12 @@ export default () => {
                                 </label>
                                 <input
                                     name="pname"
-                                    value={pname}
+                                    value={state.pname}
                                     type="text"
                                     className='form-control'
-                                    required={PCrequired}
+                                    required={state.PCrequired}
                                     onChange={getUserData}
-                                    disabled={PCdisabled}
+                                    disabled={state.PCdisabled}
                                 />
                                 <div className="invalid-feedback">
                                     Please provide a valid first name for your parent.
@@ -264,12 +327,12 @@ export default () => {
                                 </label>
                                 <input
                                     name="pEmail"
-                                    value={pEmail}
+                                    value={state.pEmail}
                                     type="email"
                                     className='form-control'
-                                    required={PCrequired}
+                                    required={state.PCrequired}
                                     onChange={getUserData}
-                                    disabled={PCdisabled}
+                                    disabled={state.PCdisabled}
                                 />
                                 <div className="invalid-feedback">
                                     Please provide a valid email address for your parent.
