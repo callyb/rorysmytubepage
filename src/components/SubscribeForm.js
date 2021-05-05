@@ -190,7 +190,7 @@ export default () => {
 
                 >
 
-                    <p className="h5 text-center mb-4">Sign in</p>
+                    <p className="h5 text-center mb-4">SUBSCRIBE</p>
                     <div className="grey-text">
                         <label
                             htmlFor='fname'
