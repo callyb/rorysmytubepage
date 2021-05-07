@@ -227,7 +227,7 @@ export default () => {
                 // Signed in 
                 const user = firebase.auth().currentUser;
                 // add only required user info incl uid to 'users' collection
-                firebase.firestore().collection('users').add({ 'fname': state.fname, 'lname': state.fname, 'email': state.email, 'consent': state.consent, 'parentConsent': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password, 'uid': user.uid })
+                firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.fname, 'email': state.email, 'consent': state.consent, 'parentConsent': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password })
                 $('button').prop('disabled', true);
                 // setSuccess with success/completed message
                 setSuccess(true);
