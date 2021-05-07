@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import produce from 'immer'
 import { set, has } from "lodash";
 import $ from 'jquery';
+
 export default () => {
 
     function enhancedReducer(state, updateArg) {
@@ -36,34 +37,37 @@ export default () => {
         fname: '',
         lname: '',
         email: '',
+        password: '',
         consent: '',
         PCdisabled: '',
         Cdisabled: '',
         PCrequired: 'required',
         Crequired: 'required',
         parentConsent: '',
-        pname: '',
+        pName: '',
         pEmail: '',
+        uid: '',
         Emails: []
     };
 
-    const db = firebase.firestore().collection('users');
+    const [errorMsg, setErrorMsg] = useState('');
+    const [errorCode, setErrorCode] = useState('');
 
-    const [userEmails, setUserEmails] = useState([]);
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const [state, updateState] = useReducer(enhancedReducer, initialState);
 
-    const getUserData = useCallback(({ target: { value, name, type } }) => {
+    const getUserData = useCallback(({ target: { value, name, type, id } }, name1, value1, id1) => {
         const updatePath = name.split(".");
         const consent = [name] == 'consent';
         const parentConsent = [name] == 'parentConsent';
-
+        console.log('deets: ',)
         // if the input is a checkbox then use callback function to update
         // the toggle state based on previous state
 
-        // Detect which checkbox to handle disabling the other one after clicking one & vice versa
+        // Detect which checkbox to handle disabling the other one after clicking one & vice versa using returned values for both first click and subsequent clicks
+        // reducers to save boolean to state
         if (type === 'checkbox' && (value === '' || value === 'false')) {
 
             if (consent) {
@@ -111,10 +115,70 @@ export default () => {
                 }))
 
                 return
-
             }
         }
 
+        // Detect if password and if so validate while it's being typed before saving it to state
+        if (type === 'password') {
+            if (value.length <= 5) {
+                $('input[id=password]').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('input[id=password]').removeClass('is-invalid').addClass('is-valid');
+            }
+        }
+
+        // detect if email and use regex to validate while it's being typed
+        if (type === 'email') {
+            if (id === 'email') {
+                $('#email').on('input', function () {
+                    if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+                        .test(value)) { $('input[id=email]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=email]').removeClass("is-valid").addClass("is-invalid"); }
+                });
+            } else if (id === 'email2') {
+                $('#email2').on('input', function () {
+                    if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+                        .test(value)) { $('input[id=email2]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=email2]').removeClass("is-valid").addClass("is-invalid"); }
+                });
+            }
+
+        }
+        // detect if plain text and if so validate all based on not empty & minimum of 2 chars
+        if (type === 'text' && id === 'fname' && value.length >= 1) {
+            $('#fname').on('input', function () {
+                if (value < 3) {
+                    $('input[id=fname]').removeClass('is-valid').addClass('is-invalid');
+                } else {
+                    $('input[id=fname]').removeClass('is-invalid').addClass('is-valid');
+                }
+            }
+            )
+        }
+
+        if (type === 'text' && id === 'lname' && value.length >= 1) {
+            $('#lname').on('input', function () {
+                if (value < 3) {
+                    $('input[id=lname]').removeClass('is-valid').addClass('is-invalid');
+                } else {
+                    $('input[id=lname]').removeClass('is-invalid').addClass('is-valid');
+                }
+            }
+            )
+        }
+
+        if (type === 'text' && id === 'pName' && value.length >= 1) {
+            $('#pName').on('input', function () {
+                if (value < 3) {
+                    $('input[id=pName]').removeClass('is-valid').addClass('is-invalid');
+                } else {
+                    $('input[id=pName]').removeClass('is-invalid').addClass('is-valid');
+                }
+            }
+            )
+        }
+
+        // after validation checking for format of object to save correctly to state
         // if we have to update the root level nodes in the form
         if (updatePath.length === 1) {
             const [key] = updatePath;
@@ -133,53 +197,45 @@ export default () => {
             });
         }
 
+        // process uid object
+        if (id1 === 'uidref') {
+            updateState({
+                name1: value1
+            })
+        }
+
     }, [],
-        console.log('state = ', state),
-
+        console.log('state = ', state)
     );
-
-    // const getUserData = (e) => {
-    //     const { name, value } = e.target;
-    //     dispatch({ type: name, value });
-    // }
 
     const handleSubmit = e => {
         e.preventDefault();
-        e.target.className += ' was-validated';
-        SaveUser(state)
+        if ($('input[type=password]').hasClass('is-invalid')) {
+            e.target.className += ' was-validated';
+
+        } else if ($('input[type=password]').hasClass('is-valid')) {
+            e.target.className += ' was-validated';
+            SaveUser(state)
+        }
     }
 
-    // Save state to firebase
-    useEffect(() => {
-        const unsubscribe =
-            firebase.firestore().collection('users').onSnapshot((snapshot) => {
-                const Emails = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    email: doc.data().email
-                }))
-                setUserEmails(Emails);
-
-            }, (error) => { console.log(error.message) }
-            )
-        return () => unsubscribe();
-    }, []);
-
     const SaveUser = () => {
-        console.log('emails at beginning of saveuser = ', userEmails)
-        if (
-            userEmails.find(user => user.email === state.email)
+        firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = firebase.auth().currentUser;
+                firebase.firestore().collection('users').add({ 'fname': state.fname, 'lname': state.fname, 'email': state.email, 'consent': state.consent, 'parentConsent': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password, 'uid': user.uid })
+                $('button').prop('disabled', true);
+                setSuccess(true);
+            }).catch((error) => {
+                setErrorCode(error.code);
+                setErrorMsg(error.message);
+                setAlert(true);
+                // setAlert with error message & code
+            })
 
-        ) {
-            console.log('emails from db = ', userEmails, 'current email = ', state.email)
-            setAlert(true)
-        } else {
-            firebase.firestore().collection('users').add({ state })
-            $('input').removeAttr('required');
-            $('button').prop('disabled', true);
-            setSuccess(true);
-        }
+    }
 
-    };
     return (
 
         <MDBRow>
@@ -192,68 +248,96 @@ export default () => {
 
                     <p className="h5 text-center mb-4">SUBSCRIBE</p>
                     <div className="grey-text">
-                        <label
-                            htmlFor='fname'
-                            className='grey-text'
-                        >
-                            First Name
+                        <div id='fnameContainer'>
+                            <label
+                                htmlFor='fname'
+                                className='grey-text'
+                            >
+                                First Name
                         </label>
-                        <input
-                            name="fname"
-                            value={state.fname}
-                            type="text"
-                            className='form-control'
-                            required
-                            onChange={getUserData}
-                        />
-                        <div className="invalid-feedback">
-                            Please provide a valid first name.
+                            <input
+                                name="fname"
+                                value={state.fname}
+                                id='fname'
+                                type="text"
+                                className='form-control'
+                                required
+                                onChange={getUserData}
+                            />
+                            <div className="invalid-feedback">
+                                Please provide a valid first name.
                         </div>
-                        <div className="valid-feedback">Looks good!</div>
-
-                        <label
-                            htmlFor='lname'
-                            className='grey-text'
-                        >
-                            Last name
+                            <div className="valid-feedback">Looks good!</div>
+                        </div>
+                        <div id='lnameContainer'>
+                            <label
+                                htmlFor='lname'
+                                className='grey-text'
+                            >
+                                Last name
                         </label>
-                        <input
-                            name="lname"
-                            value={state.lname}
-                            type="text"
-                            className='form-control'
-                            required
-                            onChange={getUserData} />
-                        <div className="invalid-feedback">
-                            Please provide a valid last name.
+                            <input
+                                name="lname"
+                                value={state.lname}
+                                type="text"
+                                id='lname'
+                                className='form-control'
+                                required
+                                onChange={getUserData} />
+                            <div className="invalid-feedback">
+                                Please provide a valid last name.
                         </div>
-                        <div className="valid-feedback">Looks good!</div>
-
-                        <label
-                            htmlFor='email'
-                            className='grey-text'
-                        >
-                            Email address
+                            <div className="valid-feedback">Looks good!</div>
+                        </div>
+                        <div id='emailContainer'>
+                            <label
+                                htmlFor='email'
+                                className='grey-text'
+                            >
+                                Email address
                         </label>
-                        <input
-                            name="email"
-                            value={state.email}
-                            type="email"
-                            required
-                            className='form-control'
-                            onChange={getUserData} />
-                        <div className="invalid-feedback">
-                            Please provide a valid email address.
+                            <input
+                                name="email"
+                                value={state.email}
+                                type="email"
+                                id='email'
+                                required
+                                className='form-control'
+                                onChange={getUserData} />
+                            <div className="invalid-feedback">
+                                Please provide a valid email address.
                         </div>
-                        <div className="valid-feedback">Looks good!</div>
+                            <div className="valid-feedback">Looks good!</div>
+                        </div>
+                        <div id='passwordContainer'>
+                            <label
+                                htmlFor='password'
+                                className='grey-text'
+                            >
+                                Make a password
+                        </label>
+                            <input
+                                name="password"
+                                value={state.password}
+                                type="password"
+                                id='password'
+                                required
+                                className='form-control'
+                                onChange={getUserData}
+                            />
+                            <div className="invalid-feedback">
+                                Please pick a password with at least 6 letters and/or numbers!
+                        </div>
+                            <div className="valid-feedback">Looks good!</div>
+                        </div>
                     </div>
-
                     <MDBRow className="mt-5">
                         <MDBCol size="1"></MDBCol>
                         <MDBCol size="10" className="border border-dark rounded py-3">
                             <div >
                                 <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
                             </div>
+
                             <div className='custom-control custom-checkbox pl-3'>
                                 <input
                                     className='custom-control-input'
@@ -299,16 +383,17 @@ export default () => {
                                     You must get your parent's permission if you're under 13, we have to check with them - it's the law! (if you're over 13, check the other box above!)
                                 </div>
                             </div>
-                            <div>
+                            <div id='pNameContainer'>
                                 <label
-                                    htmlFor='pname'
+                                    htmlFor='pName'
                                     className='grey-text'
                                 >
                                     Parent Name
                                 </label>
                                 <input
-                                    name="pname"
-                                    value={state.pname}
+                                    name="pName"
+                                    id='pName'
+                                    value={state.pName}
                                     type="text"
                                     className='form-control'
                                     required={state.PCrequired}
@@ -316,9 +401,11 @@ export default () => {
                                     disabled={state.PCdisabled}
                                 />
                                 <div className="invalid-feedback">
-                                    Please provide a valid first name for your parent.
+                                    Please provide your parent's actual full name! Thank you!
                                 </div>
                                 <div className="valid-feedback">Looks good!</div>
+                            </div>
+                            <div id='pEmailContainer'>
                                 <label
                                     htmlFor='pEmail'
                                     className='grey-text'
@@ -329,13 +416,14 @@ export default () => {
                                     name="pEmail"
                                     value={state.pEmail}
                                     type="email"
+                                    id='email2'
                                     className='form-control'
                                     required={state.PCrequired}
                                     onChange={getUserData}
                                     disabled={state.PCdisabled}
                                 />
                                 <div className="invalid-feedback">
-                                    Please provide a valid email address for your parent.
+                                    Please provide your parent's actual email address!  Thank you!.
                                 </div>
                                 <div className="valid-feedback">Looks good!</div>
                             </div>
@@ -346,7 +434,7 @@ export default () => {
                             <div>
                                 {alert &&
                                     <MDBAlert color="warning" dismiss >
-                                        You have already subscribed with this email!
+                                        `Error code = ${errorCode}: (${errorMsg})`
                             </MDBAlert>
                                 }
                                 {success &&
