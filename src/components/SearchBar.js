@@ -3,13 +3,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import { MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBBtn } from 'mdbreact';
+import ManageSubscription from './ManageSubscription';
 
 export default ({ onSubmit }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const classes = useStyles();
+  const [toggle, setToggle] = useState(false);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value)
@@ -34,8 +38,33 @@ export default ({ onSubmit }) => {
             <MenuIcon />
           </IconButton>
           <div className={classes.title}>
-            <img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className='img-fluid float-left logo' alt='logo' style={{ width: '40%' }} />
+            <img src={process.env.PUBLIC_URL + '/mytubelogo.png'} className='img-fluid float-left logo' alt='logo' />
           </div>
+
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            id='userButton'
+            onClick={() => setToggle(true)}
+            color="primary"
+          >
+            <AccountCircle />
+          </IconButton>
+          <MDBModal isOpen={toggle}>
+            <MDBModalHeader className={'d-flex align-items-center justify-content-center'}>
+
+              <div style={{ color: 'grey' }}>
+                Manage your rorysmytube subscription</div>
+            </MDBModalHeader>
+            <MDBModalBody><ManageSubscription /></MDBModalBody>
+            <MDBModalFooter className='d-flex'>
+              <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>
+                Close
+          </MDBBtn>
+            </MDBModalFooter>
+          </MDBModal>
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

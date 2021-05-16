@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import { MDBRow, MDBCol, MDBBtn, MDBAlert } from 'mdbreact';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import produce from 'immer'
 import { set, has } from "lodash";
 import $ from 'jquery';
+import { CodeSharp } from '@material-ui/icons';
 
 export default () => {
 
@@ -46,8 +47,6 @@ export default () => {
         parentConsent: '',
         pName: '',
         pEmail: '',
-        uid: '',
-        Emails: []
     };
 
     const [errorMsg, setErrorMsg] = useState('');
@@ -58,11 +57,13 @@ export default () => {
 
     const [state, updateState] = useReducer(enhancedReducer, initialState);
 
+    var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
+
+
     const getUserData = useCallback(({ target: { value, name, type, id } }, name1, value1, id1) => {
         const updatePath = name.split(".");
         const consent = [name] == 'consent';
         const parentConsent = [name] == 'parentConsent';
-        console.log('deets: ',)
         // if the input is a checkbox then use callback function to update
         // the toggle state based on previous state
 
@@ -205,7 +206,6 @@ export default () => {
         }
 
     }, [],
-        console.log('state = ', state)
     );
 
     const handleSubmit = e => {
@@ -221,13 +221,14 @@ export default () => {
     }
 
     // authenticate and save user
-    const SaveUser = () => {
-        firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
-            .then((userCredential) => {
+    const SaveUser = async () => {
+        await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+            .then(async (userCredential) => {
                 // Signed in 
                 const user = firebase.auth().currentUser;
+                console.log('uid = ', user.uid)
                 // add only required user info incl uid to 'users' collection
-                firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.fname, 'email': state.email, 'consent': state.consent, 'parentConsent': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password })
+                await firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'email': state.email, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password, 'DateFirstSubscribed': Timestamp })
                 $('button').prop('disabled', true);
                 // setSuccess with success/completed message
                 setSuccess(true);

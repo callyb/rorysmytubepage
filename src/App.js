@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import youtube from "./api/youtube";
 import firebase from "../src/firebase";
-
 import 'firebase/firestore';
 import { SearchBar, VideoList, VideoDetail } from "./components";
 
@@ -12,6 +11,7 @@ export default () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const getInfo = async () => {
+
     return await youtube.get('search', {
       params: {
         part: "snippet",
@@ -63,21 +63,25 @@ export default () => {
   };
 
   return (
-    <MDBContainer fluid className="container-fluid justify-content-center">
-      <MDBRow>
-        <MDBCol md="12">
-          <SearchBar onSubmit={handleSubmit} />
-        </MDBCol>
-      </MDBRow>
-      <MDBRow className="pt-2">
+    <div>
 
-        <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
+      <MDBContainer fluid className="container-fluid justify-content-center">
+        <MDBRow>
+          <MDBCol md="12">
+            <SearchBar onSubmit={handleSubmit} />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="pt-2">
 
-        <MDBCol md="4">
-          <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+          <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
+
+          <MDBCol md="4">
+            <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+
+    </div>
 
   );
 

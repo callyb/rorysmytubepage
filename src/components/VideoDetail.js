@@ -6,22 +6,12 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
 import SubscribeForm from './SubscribeForm';
+import HomePage from './HomePage';
 
 export default ({ video }) => {
-  const page =
 
-    <MDBCol sm='12' >
-      <div className='alt_div'>
-        <div className='mx-auto pl-0 text-center'>
-          <div className='msg'>Search for anything you want on </div>
-          <div style={{ marginTop: '1em' }}></div>
-          <div><img src={process.env.PUBLIC_URL + '/mytube_logo.png'} className='img-fluid logo' alt='logo' /></div>
-          <div style={{ paddingTop: '8em' }}><p>Note: This search needs iOS 10 or above to work on an Apple device.</p></div>
+  if (!video) return <HomePage />
 
-        </div>
-      </div>
-    </MDBCol>
-  if (!video) return page
   // change code
   const db = firebase.firestore().collection('mytubePage');
   const videoSrc = video.snippet.resourceId.videoId;
@@ -92,7 +82,8 @@ export default ({ video }) => {
     playerVars: { // https://developers.google.com/youtube/player_parameters
       rel: 0,
       showinfo: 0,
-      autoplay: 0
+      autoplay: 0,
+      modestbranding: 1,
     }
   };
   const classes = useStyles();

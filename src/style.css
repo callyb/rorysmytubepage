@@ -5,7 +5,12 @@
   padding-top: 1em;
   font-size: 1.2em;
 }
-
+.display {
+  display: 'block' !important;
+}
+.doNotDisplay {
+  display: 'none' !important;
+}
 .avatar {
   width: 100%;
   padding-top: 60%; /* 16:9 Aspect Ratio */
@@ -16,6 +21,10 @@
   height: 100%;
   padding-right: 2em;
   padding-left: 2em;
+}
+
+.logo {
+  width: 30%;
 }
 
 .vid_container {
@@ -36,10 +45,6 @@
   width: 100%;
   height: auto;
   display: block;
-}
-
-.logo {
-  width: 20%;
 }
 
 .vid {
@@ -75,18 +80,13 @@
 
 .msg {
   padding-top: 3em;
+  /* margin-bottom: 2em; */
 }
 
 .alt_div {
   position: absolute;
   left: 0;
   width: 100%;
-}
-
-@media only screen and (max-width: 400px) {
-  .logo {
-    width: 35%;
-  }
 }
 
 @media only screen and (max-width: 567px) {
@@ -108,9 +108,6 @@
   .Ripple-parent {
     overflow: inherit !important;
   }
-  .logo {
-    width: 35%;
-  }
   .titles {
     font-size: 13px;
   }
@@ -120,37 +117,21 @@
   .description {
     font-size: 1em;
   }
-  .msg {
-    font-size: 1.4em;
-  }
-  .logo {
-    width: 25%;
-  }
 }
 
 @media only screen and (min-width: 1200px) {
   .wrap {
     max-width: inherit;
-
     padding-left: 2em !important;
     padding-right: 2em !important;
   }
-}
-
-@media (min-width: 992px) {
-  .logo {
-    width: 70%;
-  }
-  .msg {
-    font-size: 1.6em;
+  h6 {
+    font-size: 1.2em;
   }
 }
 
 @media only screen and (min-width: 1600px) {
   .xlarge_margin {
     max-width: 90%;
-  }
-  .logo {
-    width: 50%;
   }
 }
