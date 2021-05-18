@@ -13,8 +13,10 @@ export default ({ video }) => {
   if (!video) return <HomePage />
 
   // change code
-  const db = firebase.firestore().collection('mytubePage');
+  const db = firebase.firestore().collection('mytubePage').doc('data').collection('videos');
   const videoSrc = video.snippet.resourceId.videoId;
+  const description = video.snippet.description;
+
   const likesRef = db.doc(videoSrc);
   let newVideoSrc = '';
   const [countLikes, setCountlikes] = useState('');
@@ -26,13 +28,13 @@ export default ({ video }) => {
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
     const vidName = video.snippet.title;
+    // console.log(video.snippet)
     db.doc(newVideoSrc || videoSrc)
       .get().then(function (doc) {
         if (!doc.exists) {
           db.doc(newVideoSrc || videoSrc)
-            .set({ 'likes': 0, 'dislikes': 0, 'title': vidName })
+            .set({ 'likes': 0, 'dislikes': 0, 'title': vidName, 'description': description });
         }
-
       })
     setCountDislikes(0);
     setCountlikes(0);
@@ -204,7 +206,8 @@ export default ({ video }) => {
             <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
               <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-center justify-content-center h5' onClick={() => setToggle(true)}>SUBSCRIBE</MDBBtn>
               <MDBModal isOpen={toggle}>
-                <MDBModalHeader>Subscribe to receive an email each time Turtle567 posts a new video and to get extra news!</MDBModalHeader>
+                <MDBModalHeader style={{ backgroundColor: '#2196F3', color: 'white', fontWeight: 'bold' }} className='d-flex align-items-center justify-content-center'>
+                  <div>Subscribe to receive an email each time Turtle567 posts a new video and to get extra news!</div></MDBModalHeader>
                 <MDBModalBody><SubscribeForm /></MDBModalBody>
                 <MDBModalFooter className='d-flex'>
                   <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>

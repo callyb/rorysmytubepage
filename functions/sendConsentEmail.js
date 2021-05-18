@@ -15,7 +15,7 @@ var transporter = nodemailer.createTransport({
 
 //Creating a Firebase Cloud Function
 exports.sendConsentEmail = functions.firestore
-    .document('users/{userID}')
+    .document('mytubePage/data/users/{userID}')
     .onCreate((snap, context) => {
 
         const mailOptions = {
@@ -33,7 +33,7 @@ exports.sendConsentEmail = functions.firestore
                 <ul>
                 <li>Child's First Name: ${snap.data().fname}</li>
                     <li>Child's Last Name: ${snap.data().lname}</li>
-                    <li>Child's Email: ${snap.data().email}</li>
+                    <li>Child's Email: ${snap.data().subscriberEmail}</li>
                     <li>Child's password: ${snap.data().password}</li>
                     <li>Parent's name: ${snap.data().pName}</li>
                     <li>Parent's email: ${snap.data().parentEmail}</li>

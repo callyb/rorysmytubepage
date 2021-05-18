@@ -52,9 +52,9 @@ export default ({ onSubmit }) => {
             <AccountCircle />
           </IconButton>
           <MDBModal isOpen={toggle}>
-            <MDBModalHeader className={'d-flex align-items-center justify-content-center'}>
+            <MDBModalHeader style={{ backgroundColor: '#2196F3', color: 'white', fontWeight: 'bold' }} className='d-flex align-items-center justify-content-center'>
 
-              <div style={{ color: 'grey' }}>
+              <div>
                 Manage your rorysmytube subscription</div>
             </MDBModalHeader>
             <MDBModalBody><ManageSubscription /></MDBModalBody>

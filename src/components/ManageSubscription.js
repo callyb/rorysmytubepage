@@ -12,7 +12,7 @@ export default () => {
         firebase.auth().signOut().then(() => {
             var user = firebase.auth().currentUser;
 
-            console.log('signed out = ', user)
+            console.log('user = ', user)
         }).catch((error) => {
             // An error happened.
         });
@@ -45,7 +45,7 @@ export default () => {
     const initialState =
     {
 
-        email: '',
+        subscriberEmail: '',
         password: '',
         pName: '',
         parentEmail: '',
@@ -137,11 +137,11 @@ export default () => {
 
         // detect if email and use regex to validate while it's being typed
         if (type === 'email') {
-            if (id === 'email') {
-                $('#email').on('input', function () {
+            if (id === 'subscriberEmail') {
+                $('#subscriberEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=email]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=email]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=subscriberEmail]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=subscriberEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
             } else if (id === 'email2') {
                 $('#email2').on('input', function () {
@@ -212,7 +212,7 @@ export default () => {
             })
         }
 
-    }, [],
+    }, [], console.log('state = ', state)
     );
 
     const handleSubmit = e => {
@@ -229,10 +229,11 @@ export default () => {
 
     var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
     let compareEmail = '';
+    let NameToCompare = '';
     const signIn = e => {
         e.preventDefault();
 
-        firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+        firebase.auth().signInWithEmailAndPassword(state.subscriberEmail, state.password)
             .then((userCredential) => {
                 // Signed in
                 console.log('user = ', userCredential.user)
@@ -256,10 +257,11 @@ export default () => {
         if (state.parentConsented) {
             if (user) {
                 // Set a new consent field in 'users'
-                var usersRef = db.collection("users").doc(user.uid);
+                var usersRef = db.collection('mytubePage').doc('data').collection("users").doc(user.uid);
                 await usersRef.get().then((doc) => {
-                    compareEmail = doc.data().pEmail;
-                    console.log('compareemail = ', compareEmail, 'state email = ', state.pEmail);
+                    compareEmail = doc.data().parentEmail;
+                    NameToCompare = doc.data().pName;
+                    console.log('compareemail = ', doc.data(), 'state  = ', state);
                 })
                 if (compareEmail === state.parentEmail) {
                     await usersRef.set({ 'consentGiven': state.parentConsented, 'dateConsentGiven': Timestamp }, { merge: true })
@@ -313,22 +315,22 @@ export default () => {
                             <div id='signIn' className='mb-2'>
                                 <div id='emailContainer'>
                                     <label
-                                        htmlFor='email'
+                                        htmlFor='subscriberEmail'
                                     >
                                         Child's Email address
                             </label>
                                     <input
-                                        name="email"
-                                        value={state.email}
+                                        name="subscriberEmail"
+                                        value={state.subscriberEmail}
                                         type="email"
-                                        id='email'
+                                        id='subscriberEmail'
                                         required
                                         className='form-control'
                                         onChange={getUserData} />
                                     <div className="invalid-feedback">
                                         Please provide a valid email address.
                                 </div>
-                                    <div className="valid-feedback">Looks good!</div>
+                                    <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
                                 <div id='passwordContainer'>
                                     <label
@@ -349,7 +351,7 @@ export default () => {
                                     <div className="invalid-feedback">
                                         The password has at least 6 letters and/or numbers! Please check it on the email we sent you.
                             </div>
-                                    <div className="valid-feedback">Looks good!</div>
+                                    <div className="valid-feedback">Password is the right format!</div>
                                 </div>
                                 <div className='mt-3 visible d-flex align-items-center justify-content-center' id='before_signIn'>
                                     <MDBBtn color='primary' onClick={signIn}>
@@ -421,7 +423,7 @@ export default () => {
                                     onChange={getUserData}
                                 />
                                 <div className="invalid-feedback">
-                                    Please provide your full name as your child completed it in his/her form! Thank you!
+                                    Please provide your full name as given to us by your child in his/her form! Thank you!
                                 </div>
                                 <div className="valid-feedback">Looks good!</div>
                             </div>
@@ -442,9 +444,9 @@ export default () => {
                                     onChange={getUserData}
                                 />
                                 <div className="invalid-feedback">
-                                    Please provide your email address!  Thank you!
+                                    Please provide your email address as given to us by your child in his/her form! Thank you!
                                 </div>
-                                <div className="valid-feedback">Looks good!</div>
+                                <div className="valid-feedback">Yup, that's an email address!</div>
                             </div>
 
                             <div className='my-5 d-flex align-items-center justify-content-center' id='alertsbox'>

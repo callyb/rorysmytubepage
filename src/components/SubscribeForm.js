@@ -5,7 +5,6 @@ import 'firebase/firestore';
 import produce from 'immer'
 import { set, has } from "lodash";
 import $ from 'jquery';
-import { CodeSharp } from '@material-ui/icons';
 
 export default () => {
 
@@ -37,7 +36,7 @@ export default () => {
     {
         fname: '',
         lname: '',
-        email: '',
+        subscriberEmail: '',
         password: '',
         consent: '',
         PCdisabled: '',
@@ -46,7 +45,7 @@ export default () => {
         Crequired: 'required',
         parentConsent: '',
         pName: '',
-        pEmail: '',
+        parentEmail: '',
     };
 
     const [errorMsg, setErrorMsg] = useState('');
@@ -58,7 +57,6 @@ export default () => {
     const [state, updateState] = useReducer(enhancedReducer, initialState);
 
     var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
-
 
     const getUserData = useCallback(({ target: { value, name, type, id } }, name1, value1, id1) => {
         const updatePath = name.split(".");
@@ -130,11 +128,11 @@ export default () => {
 
         // detect if email and use regex to validate while it's being typed
         if (type === 'email') {
-            if (id === 'email') {
-                $('#email').on('input', function () {
+            if (id === 'subscriberEmail') {
+                $('#subscriberEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=email]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=email]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=subscriberEmail]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=subscriberEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
             } else if (id === 'email2') {
                 $('#email2').on('input', function () {
@@ -222,14 +220,14 @@ export default () => {
 
     // authenticate and save user
     const SaveUser = async () => {
-        await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
-            .then(async (userCredential) => {
+        await firebase.auth().createUserWithEmailAndPassword(state.subscriberEmail, state.password)
+            .then((userCredential) => {
                 // Signed in 
                 const user = firebase.auth().currentUser;
                 console.log('uid = ', user.uid)
                 // add only required user info incl uid to 'users' collection
-                await firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'email': state.email, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.pEmail, 'pName': state.pName, 'password': state.password, 'DateFirstSubscribed': Timestamp })
-                $('button').prop('disabled', true);
+                firebase.firestore().collection('mytubePage').doc('data').collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'subscriberEmail': state.subscriberEmail, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.parentEmail, 'pName': state.pName, 'password': state.password, 'DateFirstSubscribed': Timestamp })
+                $('#subscribeBtn').prop('disabled', true);
                 // setSuccess with success/completed message
                 setSuccess(true);
             }).catch((error) => {
@@ -270,7 +268,7 @@ export default () => {
                                 onChange={getUserData}
                             />
                             <div className="invalid-feedback">
-                                Please provide a valid first name.
+                                Your first name needs to have at least 2 letters in it.
                         </div>
                             <div className="valid-feedback">Looks good!</div>
                         </div>
@@ -290,29 +288,29 @@ export default () => {
                                 required
                                 onChange={getUserData} />
                             <div className="invalid-feedback">
-                                Please provide a valid last name.
+                                Your last name needs to have at least 2 letters in it.
                         </div>
                             <div className="valid-feedback">Looks good!</div>
                         </div>
                         <div id='emailContainer'>
                             <label
-                                htmlFor='email'
+                                htmlFor='subscriberEmail'
                                 className='grey-text'
                             >
                                 Email address
                         </label>
                             <input
-                                name="email"
-                                value={state.email}
+                                name="subscriberEmail"
+                                value={state.subscriberEmail}
                                 type="email"
-                                id='email'
+                                id='subscriberEmail'
                                 required
                                 className='form-control'
                                 onChange={getUserData} />
                             <div className="invalid-feedback">
                                 Please provide a valid email address.
                         </div>
-                            <div className="valid-feedback">Looks good!</div>
+                            <div className="valid-feedback">Yup, that's an email address!</div>
                         </div>
                         <div id='passwordContainer'>
                             <label
@@ -359,7 +357,7 @@ export default () => {
                                     Please use my details to update me on new videos - I am over 13
                                 </label>
                                 <div className='invalid-feedback'>
-                                    Either tick this box or the one for under 13 year olds please
+                                    Either tick this box or the one that says 'under 13's' please
                                 </div>
                             </div>
                         </MDBCol>
@@ -406,20 +404,20 @@ export default () => {
                                     disabled={state.PCdisabled}
                                 />
                                 <div className="invalid-feedback">
-                                    Please provide your parent's actual full name! Thank you!
+                                    Please provide your parent's actual full name (at least 2 letters long)! Thank you!
                                 </div>
                                 <div className="valid-feedback">Looks good!</div>
                             </div>
                             <div id='pEmailContainer'>
                                 <label
-                                    htmlFor='pEmail'
+                                    htmlFor='parentEmail'
                                     className='grey-text'
                                 >
                                     Parent Email Address
                                 </label>
                                 <input
-                                    name="pEmail"
-                                    value={state.pEmail}
+                                    name="parentEmail"
+                                    value={state.parentEmail}
                                     type="email"
                                     id='email2'
                                     className='form-control'
@@ -430,7 +428,7 @@ export default () => {
                                 <div className="invalid-feedback">
                                     Please provide your parent's actual email address!  Thank you!.
                                 </div>
-                                <div className="valid-feedback">Looks good!</div>
+                                <div className="valid-feedback">Yup, that's an email address!</div>
                             </div>
                         </MDBCol>
                     </MDBRow>
@@ -453,7 +451,7 @@ export default () => {
                     <MDBRow>
                         <MDBCol size="12" className='d-flex justify-content-center pt-5'>
                             <div>
-                                <MDBBtn color='primary' type='submit'>
+                                <MDBBtn color='primary' id='SubscribeBtn' type='submit'>
                                     Submit Form
                             </MDBBtn>
                             </div>

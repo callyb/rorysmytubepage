@@ -14,7 +14,7 @@ var transporter = nodemailer.createTransport({
 
 //Creating a Firebase Cloud Function
 exports.sendWelcomeEmail = functions.firestore
-    .document('users/{userID}')
+    .document('mytubePage/data/users/{userID}')
     .onUpdate((change, context) => {
         // Document id of the updated document
         const previousValue = change.before.data();
@@ -24,7 +24,7 @@ exports.sendWelcomeEmail = functions.firestore
         if (newValue.consentGiven === true) {
             const mailOptions = {
                 from: `567turtle@rorysmytube.com`,
-                to: previousValue.email,
+                to: previousValue.subscriberEmail,
                 subject: 'Welcome',
                 html: `<link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Condensed&display=swap" rel="stylesheet">
             <style>
