@@ -5,7 +5,7 @@ import { MDBRow, MDBCol, MDBIcon, MDBBtn, MDBPopover, MDBPopoverBody, MDBPopover
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import YouTube from 'react-youtube';
-import SubscribeForm from './SubscribeForm';
+import ManageUser from './ManageUser';
 import HomePage from './HomePage';
 
 export default ({ video }) => {
@@ -24,6 +24,7 @@ export default ({ video }) => {
   const [likeBtnDisabled, setLikeBtnDisabled] = useState(undefined);
   const [dislikeBtnDisabled, setDislikeBtnDisabled] = useState(undefined);
   const [toggle, setToggle] = useState(false);
+  const [dateMade, setDateMade] = useState('');
 
   useEffect(() => {
     newVideoSrc = video.snippet.resourceId.videoId;
@@ -64,19 +65,16 @@ export default ({ video }) => {
               setCountDislikes(newCount.dislikes);
             }
           }
+          var date = new Date(video.snippet.publishedAt);
+          var day = date.getUTCDate()
+          var mon = date.toLocaleString('en-GB', { month: 'long' });
+          var year = date.getUTCFullYear();
+
+          setDateMade(day + " " + mon + ", " + year);
         });
-      });
+
+      })
   }
-
-  var dateObj = new Date();
-  var mon = dateObj.getMonth() + 1; //months from 1-12
-  var day = dateObj.getUTCDate();
-  var year = dateObj.getUTCFullYear();
-
-  var options = { month: 'long' };
-  var month = new Intl.DateTimeFormat('en-GB', options).format(mon);
-
-  var newdate = month + ' ' + day + ', ' + year;
 
   const opts = {
     height: '100%',
@@ -100,7 +98,6 @@ export default ({ video }) => {
           likesRef.update({ likes: increment })
         } else {
           likesRef.set({ likes: increment }) // create the document
-          console.log('likesRef = ', likesRef,)
         }
       }).then(setLikeBtnDisabled('disabled'))
   };
@@ -112,7 +109,6 @@ export default ({ video }) => {
     likesRef.get()
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
-          console.log('data = ', docSnapshot.data)
           likesRef.update({ dislikes: increment })
         } else {
           likesRef.set({ dislikes: increment }) // create the document
@@ -148,7 +144,7 @@ export default ({ video }) => {
           <MDBCol sm='6' className='date'>
 
             <p style={{ color: '#2b2a2a', fontSize: '1.05em', fontWeight: 'bolder' }}>
-              {newdate}
+              {dateMade}
             </p>
           </MDBCol>
           <MDBCol className='spacer' size='2'></MDBCol>
@@ -205,10 +201,10 @@ export default ({ video }) => {
             <MDBCol size='5'></MDBCol>
             <MDBCol size='4' className='d-flex align-self-start justify-content-center flex-wrap'>
               <MDBBtn tag='a' role='button' color='red' className='subscribeBtn d-flex align-items-center justify-content-center h5' onClick={() => setToggle(true)}>SUBSCRIBE</MDBBtn>
-              <MDBModal isOpen={toggle}>
+              <MDBModal isOpen={toggle} size='lg'>
                 <MDBModalHeader style={{ backgroundColor: '#2196F3', color: 'white', fontWeight: 'bold' }} className='d-flex align-items-center justify-content-center'>
-                  <div>Subscribe to receive an email each time Turtle567 posts a new video and to get extra news!</div></MDBModalHeader>
-                <MDBModalBody><SubscribeForm /></MDBModalBody>
+                  <div>Manage your rorysmytube subscription</div></MDBModalHeader>
+                <MDBModalBody><ManageUser /></MDBModalBody>
                 <MDBModalFooter className='d-flex'>
                   <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>
                     Close

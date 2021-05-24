@@ -2,7 +2,6 @@ import React from 'react';
 import { MDBCol, MDBRow } from 'mdbreact';
 
 export default ({ video, onVideoSelect }) => {
-  // console.log('video title =', video.snippet.title)
   return (
     <MDBRow className='d-flex justify-content-left' style={{ padding: '0' }} onClick={() => onVideoSelect(video)} >
       <MDBCol size='6'>

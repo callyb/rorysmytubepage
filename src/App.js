@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import youtube from "./api/youtube";
 import firebase from "../src/firebase";
@@ -53,12 +53,9 @@ export default () => {
 
   const handleSubmit = async () => {
     const { data: { items: videos } } = await getInfo()
-    let shuffled = videos
-      .map((a) => ({ sort: Math.random(), value: a }))
-      .sort((a, b) => a.sort - b.sort)
-      .map((a) => a.value)
-    setVideos(shuffled);
-    setSelectedVideo(shuffled[0]);
+    let sorted = videos.sort((a, b) => new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt));
+    setVideos(sorted);
+    setSelectedVideo(sorted[0]);
 
   };
 

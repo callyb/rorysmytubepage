@@ -36,8 +36,8 @@ export default () => {
     {
         fname: '',
         lname: '',
-        subscriberEmail: '',
-        password: '',
+        SFuserEmail: '',
+        SFpassword: '',
         consent: '',
         PCdisabled: '',
         Cdisabled: '',
@@ -53,15 +53,19 @@ export default () => {
 
     const [alert, setAlert] = useState(false);
     const [success, setSuccess] = useState(false);
-
+    const [disableSubmit, setDisableSubmit] = useState(undefined);
+    const [requireConsent, setRequireConsent] = useState(undefined);
+    const [disableConsent, setDisableConsent] = useState(undefined);
+    const [requirePConsent, setRequirePConsent] = useState(undefined);
+    const [disablePConsent, setDisablePConsent] = useState(undefined);
     const [state, updateState] = useReducer(enhancedReducer, initialState);
 
     var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
 
     const getUserData = useCallback(({ target: { value, name, type, id } }, name1, value1, id1) => {
         const updatePath = name.split(".");
-        const consent = [name] == 'consent';
-        const parentConsent = [name] == 'parentConsent';
+        const consent = ([name] == 'consent');
+        const parentConsent = ([name] == 'parentConsent');
         // if the input is a checkbox then use callback function to update
         // the toggle state based on previous state
 
@@ -73,20 +77,18 @@ export default () => {
 
                 updateState((prevState) => ({
                     [name]: !prevState[name],
-                    'PCdisabled': 'disabled'
 
                 }))
-
+                setDisablePConsent(true);
                 return
 
             }
             else if (parentConsent) {
                 updateState((prevState) => ({
                     [name]: !prevState[name],
-                    'Cdisabled': 'disabled'
 
                 }))
-
+                setDisableConsent(true);
                 return
 
             }
@@ -96,11 +98,10 @@ export default () => {
 
                 updateState((prevState) => ({
                     [name]: !prevState[name],
-                    'PCdisabled': '',
-                    'PCrequired': 'required'
 
                 }))
-
+                setDisablePConsent(false);
+                setRequirePConsent(true);
                 return
 
             }
@@ -108,10 +109,10 @@ export default () => {
 
                 updateState((prevState) => ({
                     [name]: !prevState[name],
-                    'Cdisabled': '',
-                    'Crequired': 'required'
 
                 }))
+                setDisableConsent(false);
+                setRequireConsent(true);
 
                 return
             }
@@ -120,31 +121,31 @@ export default () => {
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
             if (value.length <= 5) {
-                $('input[id=password]').removeClass('is-valid').addClass('is-invalid');
+                $('input[id=SFpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
-                $('input[id=password]').removeClass('is-invalid').addClass('is-valid');
+                $('input[id=SFpassword]').removeClass('is-invalid').addClass('is-valid');
             }
         }
 
         // detect if email and use regex to validate while it's being typed
         if (type === 'email') {
-            if (id === 'subscriberEmail') {
-                $('#subscriberEmail').on('input', function () {
+            if (id === 'SFuserEmail') {
+                $('#SFuserEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=subscriberEmail]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=subscriberEmail]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=SFuserEmail]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=SFuserEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
-            } else if (id === 'email2') {
-                $('#email2').on('input', function () {
+            } else if (id === 'parentEmail4Consent') {
+                $('#parentEmail4Consent').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=email2]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=email2]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=parentEmail4Consent]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=parentEmail4Consent]').removeClass("is-valid").addClass("is-invalid"); }
                 });
             }
 
         }
         // detect if plain text and if so validate all based on not empty & minimum of 2 chars
-        if (type === 'text' && id === 'fname' && value.length >= 1) {
+        if (type === 'text' && id === 'fname' && value.length >= 2) {
             $('#fname').on('input', function () {
                 if (value < 3) {
                     $('input[id=fname]').removeClass('is-valid').addClass('is-invalid');
@@ -155,7 +156,7 @@ export default () => {
             )
         }
 
-        if (type === 'text' && id === 'lname' && value.length >= 1) {
+        if (type === 'text' && id === 'lname' && value.length >= 2) {
             $('#lname').on('input', function () {
                 if (value < 3) {
                     $('input[id=lname]').removeClass('is-valid').addClass('is-invalid');
@@ -166,7 +167,7 @@ export default () => {
             )
         }
 
-        if (type === 'text' && id === 'pName' && value.length >= 1) {
+        if (type === 'text' && id === 'pName' && value.length >= 2) {
             $('#pName').on('input', function () {
                 if (value < 3) {
                     $('input[id=pName]').removeClass('is-valid').addClass('is-invalid');
@@ -213,21 +214,24 @@ export default () => {
             e.target.className += ' was-validated';
 
         } else if ($('input[type=password]').hasClass('is-valid')) {
+            const check = $('input[type=password]').hasClass('is-valid');
             e.target.className += ' was-validated';
+            console.log('subscribe = ', state, 'passwordInput = ', check)
             SaveUser(state)
+
         }
     }
 
     // authenticate and save user
     const SaveUser = async () => {
-        await firebase.auth().createUserWithEmailAndPassword(state.subscriberEmail, state.password)
+        await firebase.auth().createUserWithEmailAndPassword(state.SFuserEmail, state.SFpassword)
             .then((userCredential) => {
                 // Signed in 
-                const user = firebase.auth().currentUser;
+                const user = userCredential.user;
                 console.log('uid = ', user.uid)
                 // add only required user info incl uid to 'users' collection
-                firebase.firestore().collection('mytubePage').doc('data').collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'subscriberEmail': state.subscriberEmail, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.parentEmail, 'pName': state.pName, 'password': state.password, 'DateFirstSubscribed': Timestamp })
-                $('#subscribeBtn').prop('disabled', true);
+                firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'email': state.SFuserEmail, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.parentEmail, 'pName': state.pName, 'password': state.SFpassword, 'DateFirstSubscribed': Timestamp })
+                setDisableSubmit(true);
                 // setSuccess with success/completed message
                 setSuccess(true);
             }).catch((error) => {
@@ -245,223 +249,223 @@ export default () => {
             <MDBCol size="12">
                 <form
                     onSubmit={handleSubmit}
-                    className='needs-validation'
-
+                    className='needs-validation grey-text'
                 >
-
-                    <p className="h5 text-center mb-4">SUBSCRIBE</p>
-                    <div className="grey-text">
-                        <div id='fnameContainer'>
-                            <label
-                                htmlFor='fname'
-                                className='grey-text'
-                            >
-                                First Name
-                        </label>
-                            <input
-                                name="fname"
-                                value={state.fname}
-                                id='fname'
-                                type="text"
-                                className='form-control'
-                                required
-                                onChange={getUserData}
-                            />
-                            <div className="invalid-feedback">
-                                Your first name needs to have at least 2 letters in it.
-                        </div>
-                            <div className="valid-feedback">Looks good!</div>
-                        </div>
-                        <div id='lnameContainer'>
-                            <label
-                                htmlFor='lname'
-                                className='grey-text'
-                            >
-                                Last name
-                        </label>
-                            <input
-                                name="lname"
-                                value={state.lname}
-                                type="text"
-                                id='lname'
-                                className='form-control'
-                                required
-                                onChange={getUserData} />
-                            <div className="invalid-feedback">
-                                Your last name needs to have at least 2 letters in it.
-                        </div>
-                            <div className="valid-feedback">Looks good!</div>
-                        </div>
-                        <div id='emailContainer'>
-                            <label
-                                htmlFor='subscriberEmail'
-                                className='grey-text'
-                            >
-                                Email address
-                        </label>
-                            <input
-                                name="subscriberEmail"
-                                value={state.subscriberEmail}
-                                type="email"
-                                id='subscriberEmail'
-                                required
-                                className='form-control'
-                                onChange={getUserData} />
-                            <div className="invalid-feedback">
-                                Please provide a valid email address.
-                        </div>
-                            <div className="valid-feedback">Yup, that's an email address!</div>
-                        </div>
-                        <div id='passwordContainer'>
-                            <label
-                                htmlFor='password'
-                                className='grey-text'
-                            >
-                                Make a password
-                        </label>
-                            <input
-                                name="password"
-                                value={state.password}
-                                type="password"
-                                id='password'
-                                required
-                                className='form-control'
-                                onChange={getUserData}
-                            />
-                            <div className="invalid-feedback">
-                                Please pick a password with at least 6 letters and/or numbers!
-                        </div>
-                            <div className="valid-feedback">Looks good!</div>
-                        </div>
-                    </div>
-                    <MDBRow className="mt-5">
-                        <MDBCol size="1"></MDBCol>
-                        <MDBCol size="10" className="border border-dark rounded py-3">
-                            <div >
-                                <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
+                    <MDBRow className='d-flex align-items-center justify-content-center'>
+                        <MDBCol size="11" className="p-3">
+                            <div className='d-flex align-items-center justify-content-center'>
+                                <p className='mb-1' style={{ fontSize: '1em', fontWeight: 'bold' }}>Subscribe to rorysmytube</p>
                             </div>
-
-                            <div className='custom-control custom-checkbox pl-3'>
-                                <input
-                                    className='custom-control-input'
-                                    type='checkbox'
-                                    value={state.consent}
-                                    id='consent'
-                                    name='consent'
-                                    onChange={getUserData}
-                                    checked={state.consent}
-                                    required={state.Crequired}
-                                    disabled={state.Cdisabled}
-                                />
-                                <label className='custom-control-label' htmlFor='consent'>
-                                    Please use my details to update me on new videos - I am over 13
-                                </label>
-                                <div className='invalid-feedback'>
-                                    Either tick this box or the one that says 'under 13's' please
-                                </div>
-                            </div>
-                        </MDBCol>
-                    </MDBRow>
-                    <MDBRow className='mt-3'>
-                        <MDBCol size="1"></MDBCol>
-                        <MDBCol size="10" className="border border-dark rounded py-3">
-                            <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>UNDER 13'S...</p>
-
-                            <div className='custom-control custom-checkbox pl-3'>
-                                <input
-                                    className='custom-control-input'
-                                    type='checkbox'
-                                    value={state.parentConsent}
-                                    id='parentConsent'
-                                    name='parentConsent'
-                                    onChange={getUserData}
-                                    checked={state.ParentConsent}
-                                    required={state.PCrequired}
-                                    disabled={state.PCdisabled}
-                                />
-                                <label className='custom-control-label' htmlFor='parentConsent'>
-                                    Please use my details to update me on new videos - I have my parent's permission & here is their name and email address
-                                </label>
-                                <div className='invalid-feedback'>
-                                    You must get your parent's permission if you're under 13, we have to check with them - it's the law! (if you're over 13, check the other box above!)
-                                </div>
-                            </div>
-                            <div id='pNameContainer'>
-                                <label
-                                    htmlFor='pName'
-                                    className='grey-text'
-                                >
-                                    Parent Name
-                                </label>
-                                <input
-                                    name="pName"
-                                    id='pName'
-                                    value={state.pName}
-                                    type="text"
-                                    className='form-control'
-                                    required={state.PCrequired}
-                                    onChange={getUserData}
-                                    disabled={state.PCdisabled}
-                                />
-                                <div className="invalid-feedback">
-                                    Please provide your parent's actual full name (at least 2 letters long)! Thank you!
-                                </div>
-                                <div className="valid-feedback">Looks good!</div>
-                            </div>
-                            <div id='pEmailContainer'>
-                                <label
-                                    htmlFor='parentEmail'
-                                    className='grey-text'
-                                >
-                                    Parent Email Address
-                                </label>
-                                <input
-                                    name="parentEmail"
-                                    value={state.parentEmail}
-                                    type="email"
-                                    id='email2'
-                                    className='form-control'
-                                    required={state.PCrequired}
-                                    onChange={getUserData}
-                                    disabled={state.PCdisabled}
-                                />
-                                <div className="invalid-feedback">
-                                    Please provide your parent's actual email address!  Thank you!.
-                                </div>
-                                <div className="valid-feedback">Yup, that's an email address!</div>
-                            </div>
-                        </MDBCol>
-                    </MDBRow>
-                    <MDBRow>
-                        <MDBCol size="12" className='d-flex justify-content-center pt-5'>
+                            <div><p style={{ fontSize: '.8em' }}>Please fill in all the boxes then fill in the box that has your age at the top (you can only choose one or the other, and if you're under 13 we need you to pick the second box that says that)  Thank you!</p></div>
                             <div>
-                                {alert &&
-                                    <MDBAlert color="warning" dismiss >
-                                        `Error code = ${errorCode}: (${errorMsg})`
-                            </MDBAlert>
-                                }
-                                {success &&
-                                    <MDBAlert color="success" dismiss >
-                                        Yay! You have succesfully subscribed! Close the subscribe box to carry on.
-                            </MDBAlert>
-                                }
+                                <div id='fnameContainer'>
+                                    <label
+                                        htmlFor='fname'
+                                    >
+                                        First Name
+                        </label>
+                                    <input
+                                        name="fname"
+                                        value={state.fname || ''}
+                                        id='fname'
+                                        type="text"
+                                        className='form-control'
+                                        required
+                                        onChange={getUserData}
+                                    />
+                                    <div className="invalid-feedback">
+                                        Your first name needs to have at least 2 letters in it.
+                        </div>
+                                    <div className="valid-feedback">Looks good!</div>
+                                </div>
+                                <div id='lnameContainer'>
+                                    <label
+                                        htmlFor='lname'
+                                    >
+                                        Last name
+                        </label>
+                                    <input
+                                        name="lname"
+                                        value={state.lname || ''}
+                                        type="text"
+                                        id='lname'
+                                        className='form-control'
+                                        required
+                                        onChange={getUserData} />
+                                    <div className="invalid-feedback">
+                                        Your last name needs to have at least 2 letters in it.
+                        </div>
+                                    <div className="valid-feedback">Looks good!</div>
+                                </div>
+                                <div id='emailContainer'>
+                                    <label
+                                        htmlFor='SFuserEmail'
+                                    >
+                                        Child's Email address
+                            </label>
+                                    <input
+                                        name="SFuserEmail"
+                                        value={state.SFuserEmail}
+                                        type="email"
+                                        id='SFuserEmail'
+                                        required
+                                        className='form-control'
+                                        onChange={getUserData} />
+                                    <div className="invalid-feedback">
+                                        Please provide a valid email address.
+                                </div>
+                                    <div className="valid-feedback">Yup, that's an email address!</div>
+                                </div>
+                                <div id='passwordContainer'>
+                                    <label
+                                        htmlFor='SFpassword'
+                                        className='grey-text'
+                                    >
+                                        Enter a password
+                            </label>
+                                    <input
+                                        name="SFpassword"
+                                        value={state.SFpassword || ''}
+                                        type="password"
+                                        id='SFpassword'
+                                        required
+                                        className='form-control'
+                                        onChange={getUserData}
+                                    />
+                                    <div className="invalid-feedback">
+                                        Your password needs to have at least 5 letters and numbers (or at least 5 of either one!)
                             </div>
-                        </MDBCol>
-                    </MDBRow>
-                    <MDBRow>
-                        <MDBCol size="12" className='d-flex justify-content-center pt-5'>
-                            <div>
-                                <MDBBtn color='primary' id='SubscribeBtn' type='submit'>
-                                    Submit Form
+                                    <div className="valid-feedback">Password is the right format!</div>
+                                </div>
+                            </div>
+                            <MDBRow className="mt-5">
+                                <MDBCol size="1"></MDBCol>
+                                <MDBCol size="10" className="border border-dark rounded py-3">
+                                    <div >
+                                        <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
+                                    </div>
+
+                                    <div className='custom-control custom-checkbox pl-3'>
+                                        <input
+                                            className='custom-control-input'
+                                            type='checkbox'
+                                            value={state.consent || ''}
+                                            id='consent'
+                                            name='consent'
+                                            onChange={getUserData}
+                                            checked={state.consent}
+                                            required={requireConsent}
+                                            disabled={disableConsent}
+                                        />
+                                        <label className='custom-control-label' htmlFor='consent'>
+                                            Please use my details to update me on new videos - I am over 13
+                                </label>
+                                        <div className='invalid-feedback'>
+                                            Either tick this box or the one that says 'under 13's' please
+                                </div>
+                                    </div>
+                                </MDBCol>
+                            </MDBRow>
+                            <MDBRow className='mt-3'>
+                                <MDBCol size="1"></MDBCol>
+                                <MDBCol size="10" className="border border-dark rounded py-3">
+                                    <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>UNDER 13'S...</p>
+
+                                    <div className='custom-control custom-checkbox pl-3'>
+                                        <input
+                                            className='custom-control-input'
+                                            type='checkbox'
+                                            value={state.parentConsent || ''}
+                                            id='parentConsent'
+                                            name='parentConsent'
+                                            onChange={getUserData}
+                                            checked={state.ParentConsent}
+                                            required={requirePConsent}
+                                            disabled={disablePConsent}
+                                        />
+                                        <label className='custom-control-label grey-text' htmlFor='parentConsent'>
+                                            Please use my details to update me on new videos - I have my parent's permission & here is their name and email address
+                                </label>
+                                        <div className='invalid-feedback'>
+                                            You must get your parent's permission if you're under 13, we have to check with them - it's the law! (if you're over 13, check the other box above!)
+                                </div>
+                                    </div>
+                                    <div id='pNameContainer'>
+                                        <label
+                                            htmlFor='pName'
+                                        >
+                                            Parent Name
+                                </label>
+                                        <input
+                                            name="pName"
+                                            id='pName'
+                                            value={state.pName || ''}
+                                            type="text"
+                                            className='form-control'
+                                            required={requirePConsent}
+                                            onChange={getUserData}
+                                            disabled={disablePConsent}
+                                        />
+                                        <div className="invalid-feedback">
+                                            Please provide your parent's actual full name (at least 2 letters long)! Thank you!
+                                </div>
+                                        <div className="valid-feedback">Looks good!</div>
+                                    </div>
+                                    <div id='pEmailContainer'>
+                                        <label
+                                            htmlFor='parentEmail'
+                                        >
+                                            Parent Email Address
+                                </label>
+                                        <input
+                                            name="parentEmail"
+                                            value={state.parentEmail || ''}
+                                            type="email"
+                                            id='parentEmail4Consent'
+                                            className='form-control'
+                                            required={requirePConsent}
+                                            onChange={getUserData}
+                                            disabled={disablePConsent}
+                                        />
+                                        <div className="invalid-feedback">
+                                            Please provide your parent's actual email address!  Thank you!.
+                                </div>
+                                        <div className="valid-feedback">Yup, that's an email address!</div>
+                                    </div>
+                                </MDBCol>
+                            </MDBRow>
+                            <MDBRow>
+                                <MDBCol size="12" className='d-flex justify-content-center pt-5'>
+                                    <div>
+                                        {alert &&
+                                            <MDBAlert color="warning" dismiss >
+                                                Error = {errorCode}: {errorMsg})`
+                            </MDBAlert>
+                                        }
+                                        {success &&
+                                            <MDBAlert color="success" dismiss >
+                                                Yay! You have succesfully subscribed! Close the subscribe box to carry on.
+                            </MDBAlert>
+                                        }
+                                    </div>
+                                </MDBCol>
+                            </MDBRow>
+                            <MDBRow>
+                                <MDBCol size="12" className='d-flex justify-content-center pt-5'>
+                                    <div>
+                                        <MDBBtn color='primary' id='SubscribeBtn' disabled={disableSubmit} type='submit'>
+                                            Submit Form
                             </MDBBtn>
-                            </div>
+                                    </div>
 
+                                </MDBCol>
+                            </MDBRow>
                         </MDBCol>
                     </MDBRow>
                 </form>
 
-            </MDBCol>
-        </MDBRow>
+            </MDBCol >
+        </MDBRow >
 
     )
 }

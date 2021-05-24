@@ -5,8 +5,8 @@ admin.initializeApp();
 
 const sendConsentEmail = require('./sendConsentEmail.js')
 const sendWelcomeEmail = require('./sendWelcomeEmail.js')
-const sendNewVidEmail = require('./sendNewVidEmail.js')
+const sendgridNewVideo = require('./sendgridNewVideo')
 
 exports.sendConsentEmail = sendConsentEmail.sendConsentEmail;
 exports.sendWelcomeEmail = sendWelcomeEmail.sendWelcomeEmail;
-exports.sendNewVidEmail = sendNewVidEmail.sendNewVidEmail;
+exports.sendgridNewVideo = sendgridNewVideo.sendgridNewVideo;

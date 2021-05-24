@@ -8,12 +8,20 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBBtn } from 'mdbreact';
-import ManageSubscription from './ManageSubscription';
+import ManageUser from './ManageUser';
 
 export default ({ onSubmit }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const classes = useStyles();
   const [toggle, setToggle] = useState(false);
+
+  // const setActiveItemFunc = tab => e => {
+  //   if (this.state.activeItem !== tab) {
+  //     setActiveItem({
+  //       activeItem: tab
+  //     });
+  //   }
+  // };
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value)
@@ -29,6 +37,7 @@ export default ({ onSubmit }) => {
     <div className={classes.root}>
       <AppBar position='static' className={classes.bar}>
         <Toolbar>
+
           <IconButton
             edge='start'
             className={classes.menuButton}
@@ -37,7 +46,7 @@ export default ({ onSubmit }) => {
           >
             <MenuIcon />
           </IconButton>
-          <div className={classes.title}>
+          <div style={{ width: '100%' }} className={classes.title}>
             <img src={process.env.PUBLIC_URL + '/mytubelogo.png'} className='img-fluid float-left logo' alt='logo' />
           </div>
 
@@ -51,13 +60,13 @@ export default ({ onSubmit }) => {
           >
             <AccountCircle />
           </IconButton>
-          <MDBModal isOpen={toggle}>
+          <MDBModal isOpen={toggle} size='lg'>
             <MDBModalHeader style={{ backgroundColor: '#2196F3', color: 'white', fontWeight: 'bold' }} className='d-flex align-items-center justify-content-center'>
 
               <div>
                 Manage your rorysmytube subscription</div>
             </MDBModalHeader>
-            <MDBModalBody><ManageSubscription /></MDBModalBody>
+            <MDBModalBody><ManageUser /></MDBModalBody>
             <MDBModalFooter className='d-flex'>
               <MDBBtn tag='a' role='button' color='primary' className='align-items-center justify-content-center h5' onClick={() => setToggle(false)}>
                 Close

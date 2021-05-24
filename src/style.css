@@ -1,9 +1,27 @@
 .wrapper {
   padding-left: 1em;
 }
+.nav-tabs {
+  background-color: #bbdefb;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+.nav-item {
+  border-radius: 0.3rem;
+}
+
+.btn[class*='btn-outline-'] {
+  border-radius: 0.5rem;
+  padding-top: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
+}
+
+.toVidsBtn {
+  width: 60rem;
+}
 .title {
   padding-top: 1em;
-  font-size: 1.2em;
+  width: 100%;
 }
 .display {
   display: 'block' !important;

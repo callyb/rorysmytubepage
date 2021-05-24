@@ -45,9 +45,9 @@ export default () => {
     const initialState =
     {
 
-        subscriberEmail: '',
-        password: '',
-        pName: '',
+        GCuserEmail: '',
+        GCpassword: '',
+        parentName: '',
         parentEmail: '',
         parentConsented: '',
         PCdisabled: 'disabled',
@@ -129,25 +129,25 @@ export default () => {
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
             if (value.length <= 5) {
-                $('input[id=password]').removeClass('is-valid').addClass('is-invalid');
+                $('input[id=GCpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
-                $('input[id=password]').removeClass('is-invalid').addClass('is-valid');
+                $('input[id=GCpassword]').removeClass('is-invalid').addClass('is-valid');
             }
         }
 
         // detect if email and use regex to validate while it's being typed
         if (type === 'email') {
-            if (id === 'subscriberEmail') {
-                $('#subscriberEmail').on('input', function () {
+            if (id === 'GCuserEmail') {
+                $('#GCuserEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=subscriberEmail]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=subscriberEmail]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=GCuserEmail]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=GCuserEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
-            } else if (id === 'email2') {
-                $('#email2').on('input', function () {
+            } else if (id === 'parentEmail') {
+                $('#parentEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-                        .test(value)) { $('input[id=email2]').removeClass("is-invalid").addClass("is-valid"); }
-                    else { $('input[id=email2]').removeClass("is-valid").addClass("is-invalid"); }
+                        .test(value)) { $('input[id=parentEmail]').removeClass("is-invalid").addClass("is-valid"); }
+                    else { $('input[id=parentEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
             }
 
@@ -175,12 +175,12 @@ export default () => {
             )
         }
 
-        if (type === 'text' && id === 'pName' && value.length >= 1) {
-            $('#pName').on('input', function () {
+        if (type === 'text' && id === 'parentName' && value.length >= 1) {
+            $('#parentName').on('input', function () {
                 if (value < 3) {
-                    $('#pName').removeClass('is-valid').addClass('is-invalid');
+                    $('#parentName').removeClass('is-valid').addClass('is-invalid');
                 } else {
-                    $('#pName').removeClass('is-invalid').addClass('is-valid');
+                    $('#parentName').removeClass('is-invalid').addClass('is-valid');
                 }
             }
             )
@@ -212,15 +212,15 @@ export default () => {
             })
         }
 
-    }, [], console.log('state = ', state)
+    }, []
     );
 
     const handleSubmit = e => {
         e.preventDefault();
-        if ($('#email2').hasClass('is-invalid')) {
+        if ($('#parentEmail').hasClass('is-invalid')) {
             e.target.className += ' was-validated';
 
-        } else if ($('#email2').hasClass('is-valid')) {
+        } else if ($('#parentEmail').hasClass('is-valid')) {
             e.target.className += ' was-validated';
             SaveConsent(state)
         }
@@ -229,11 +229,10 @@ export default () => {
 
     var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
     let compareEmail = '';
-    let NameToCompare = '';
     const signIn = e => {
         e.preventDefault();
 
-        firebase.auth().signInWithEmailAndPassword(state.subscriberEmail, state.password)
+        firebase.auth().signInWithEmailAndPassword(state.GCuserEmail, state.GCpassword)
             .then((userCredential) => {
                 // Signed in
                 console.log('user = ', userCredential.user)
@@ -247,21 +246,20 @@ export default () => {
                 setErrorCode(error.code);
                 setErrorMsg(error.message);
                 setAlert1(true);
+                console.log('error in signin')
             });
     }
 
     // save consent
     const SaveConsent = async () => {
         var user = firebase.auth().currentUser;
-
+        compareEmail = state.parentEmail;
         if (state.parentConsented) {
             if (user) {
                 // Set a new consent field in 'users'
-                var usersRef = db.collection('mytubePage').doc('data').collection("users").doc(user.uid);
+                var usersRef = db.collection("users").doc(user.uid);
                 await usersRef.get().then((doc) => {
                     compareEmail = doc.data().parentEmail;
-                    NameToCompare = doc.data().pName;
-                    console.log('compareemail = ', doc.data(), 'state  = ', state);
                 })
                 if (compareEmail === state.parentEmail) {
                     await usersRef.set({ 'consentGiven': state.parentConsented, 'dateConsentGiven': Timestamp }, { merge: true })
@@ -278,24 +276,6 @@ export default () => {
         }
     }
 
-    // NEED TO CLEAR ALL VALIDATION CLASSES & ALERTS:
-    // const clearForm = () => {
-    //     updateState({
-    //         email: '',
-    //         pName: '',
-    //         parentEmail: '',
-    //         parentConsented: ''
-    //     })
-
-    //     $("form#consentForm :input").each(function () {
-    //         var input = $(this); // This is the jquery object of the input, do what you will
-    //         input.removeClass('is-valid').removeClass('is-invalid');
-    //     });
-    //     $("#parentConsented").removeAttr('checked');
-    //     $("#form#consentForm").removeClass('was-validated')
-
-    // }
-
     return (
 
         <MDBRow>
@@ -308,22 +288,22 @@ export default () => {
                     <MDBRow className='mt-3 d-flex align-items-center justify-content-center'>
                         <MDBCol size="11" className="border border-dark rounded p-3 mb-5">
                             <div className='d-flex align-items-center justify-content-center'>
-                                <h5 className='mb-1' style={{ fontSize: '1em', fontWeight: 'bold' }}>Consent to your child subscribing to rorysmytube</h5>
+                                <p className='mb-1' style={{ fontSize: '1em', fontWeight: 'bold' }}>Consent to your child subscribing to rorysmytube</p>
                             </div>
                             <div><p style={{ fontSize: '.8em' }}>Please confirm your child's subscription with their email address and password (as shown in the email from us requesting your consent). This will make sure your consent is linked to their subscription, then you can complete the consent part of the form - Thank you!</p></div>
 
                             <div id='signIn' className='mb-2'>
                                 <div id='emailContainer'>
                                     <label
-                                        htmlFor='subscriberEmail'
+                                        htmlFor='GCuserEmail'
                                     >
                                         Child's Email address
                             </label>
                                     <input
-                                        name="subscriberEmail"
-                                        value={state.subscriberEmail}
+                                        name="GCuserEmail"
+                                        value={state.GCuserEmail || ''}
                                         type="email"
-                                        id='subscriberEmail'
+                                        id='GCuserEmail'
                                         required
                                         className='form-control'
                                         onChange={getUserData} />
@@ -334,16 +314,16 @@ export default () => {
                                 </div>
                                 <div id='passwordContainer'>
                                     <label
-                                        htmlFor='password'
+                                        htmlFor='GCpassword'
                                         className='grey-text'
                                     >
                                         Enter your child's password
                             </label>
                                     <input
-                                        name="password"
-                                        value={state.password}
+                                        name="GCpassword"
+                                        value={state.GCpassword || ''}
                                         type="password"
-                                        id='password'
+                                        id='GCpassword'
                                         required
                                         className='form-control'
                                         onChange={getUserData}
@@ -408,14 +388,14 @@ export default () => {
                             </MDBRow>
                             <div id='pNameContainer'>
                                 <label
-                                    htmlFor='pName'
+                                    htmlFor='parentName'
                                 >
                                     Parent Name
                                 </label>
                                 <input
-                                    name="pName"
-                                    id='pName'
-                                    value={state.pName || ''}
+                                    name="parentName"
+                                    id='parentName'
+                                    value={state.parentName || ''}
                                     type="text"
                                     className='form-control'
                                     required
@@ -437,7 +417,7 @@ export default () => {
                                     name="parentEmail"
                                     value={state.parentEmail || ''}
                                     type="email"
-                                    id='email2'
+                                    id='parentEmail'
                                     className='form-control'
                                     required
                                     disabled
@@ -449,7 +429,7 @@ export default () => {
                                 <div className="valid-feedback">Yup, that's an email address!</div>
                             </div>
 
-                            <div className='my-5 d-flex align-items-center justify-content-center' id='alertsbox'>
+                            <div className='my-3 d-flex align-items-center justify-content-center' id='alertsbox'>
                                 {alert1 &&
                                     <MDBAlert color="warning" dismiss >
                                         Error = {errorCode}: {errorMsg}
@@ -464,7 +444,7 @@ export default () => {
 
                                 {alert3 &&
                                     <MDBAlert color="warning" dismiss >
-                                        You haven't confirmed your child's subscription - please enter their email & password as shown on the email we sent you <a href='mailto:carole@pixelist.design'>email</a> us. Close this box if you want to try again.
+                                        Your email doesn't match the one your child gave us - please enter your email just they did - you can see the info they gave us in the email we sent you about them asking to subscribe.  If you can't find it, contact us <a href='mailto:carole@pixelist.design'>here</a> with your child's name & email address & let us know you need us to resend your consent email. Close this box if you want to try again.
                                     </MDBAlert>
                                 }
 
@@ -476,11 +456,6 @@ export default () => {
                             </div>
 
                             <div className='d-flex align-items-center justify-content-center'>
-                                {/* <div>
-                                    <MDBBtn color='red' onClick={clearForm}>
-                                        Clear Form
-                            </MDBBtn>
-                                </div> */}
 
                                 <div>
                                     <MDBBtn color='primary' id='consentBtn' type='submit'>
