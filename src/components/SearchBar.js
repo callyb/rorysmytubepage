@@ -4,6 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
@@ -33,6 +34,11 @@ export default ({ onSubmit }) => {
     }
   }
 
+  const toVideos = (e) => {
+    e.preventDefault();
+    onSubmit();
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position='static' className={classes.bar}>
@@ -46,9 +52,24 @@ export default ({ onSubmit }) => {
           >
             <MenuIcon />
           </IconButton>
-          <div style={{ width: '100%' }} className={classes.title}>
-            <img src={process.env.PUBLIC_URL + '/mytubelogo.png'} className='img-fluid float-left logo' alt='logo' />
+
+          <div className={classes.title}>
+            <img src={process.env.PUBLIC_URL + '/mytubelogo.png'} className='float-left logo' alt='logo' />
           </div>
+          <MDBBtn outline color='primary' id='toVideos' className={classes.tovidbtn} onClick={toVideos}>
+            Go to Videos
+          </MDBBtn>
+          <IconButton
+            aria-label="to videos"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            id='toVideosIcon'
+            onClick={toVideos}
+            color="primary"
+            className={classes.iconButton}
+          >
+            <VideoLibraryIcon />
+          </IconButton>
 
           <IconButton
             aria-label="account of current user"
@@ -107,14 +128,16 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
     color: 'black'
   },
   title: {
+    flexGrow: 1,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+    // paddingRight: theme.spacing(2),
   },
   search: {
     borderWidth: 1,
@@ -148,6 +171,18 @@ const useStyles = makeStyles(theme => ({
     borderColor: 'primary',
     borderWidth: .5,
 
+  },
+  iconButton: {
+    display: 'block',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  tovidbtn: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 7),

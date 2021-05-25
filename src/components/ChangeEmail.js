@@ -10,11 +10,9 @@ export default () => {
 
     useEffect(() => {
         firebase.auth().signOut().then(() => {
-            var user = firebase.auth().currentUser;
 
-            console.log('user = ', user)
         }).catch((error) => {
-            // An error happened.
+            console.log('error = ', error)
         });
 
     }, []);
@@ -65,7 +63,7 @@ export default () => {
 
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
-            if (value.length <= 5) {
+            if (value.length <= 4) {
                 $('input[id=CEpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
                 $('input[id=CEpassword]').removeClass('is-invalid').addClass('is-valid');
@@ -227,7 +225,7 @@ export default () => {
                                         onChange={getUserData}
                                     />
                                     <div className="invalid-feedback">
-                                        The password has at least 6 letters and/or numbers! Please check it on the email we sent you.
+                                        The password has at least 5 letters and/or numbers! Please check it on the email we sent you.
                                         </div>
                                     <div className="valid-feedback">Password is the right format!</div>
                                 </div>

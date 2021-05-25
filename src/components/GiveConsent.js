@@ -10,11 +10,9 @@ export default () => {
 
     useEffect(() => {
         firebase.auth().signOut().then(() => {
-            var user = firebase.auth().currentUser;
 
-            console.log('user = ', user)
         }).catch((error) => {
-            // An error happened.
+            console.log('error = ', error)
         });
 
     }, []);
@@ -128,7 +126,7 @@ export default () => {
         }
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
-            if (value.length <= 5) {
+            if (value.length <= 4) {
                 $('input[id=GCpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
                 $('input[id=GCpassword]').removeClass('is-invalid').addClass('is-valid');
@@ -153,37 +151,14 @@ export default () => {
 
         }
         // detect if plain text and if so validate all based on not empty & minimum of 2 chars
-        if (type === 'text' && id === 'fname' && value.length >= 1) {
-            $('#fname').on('input', function () {
-                if (value < 3) {
-                    $('#fname').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('#fname').removeClass('is-invalid').addClass('is-valid');
-                }
-            }
-            )
-        }
 
-        if (type === 'text' && id === 'lname' && value.length >= 1) {
-            $('#lname').on('input', function () {
-                if (value < 3) {
-                    $('#lname').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('#lname').removeClass('is-invalid').addClass('is-valid');
-                }
+        if (type === 'text' && id === 'parentName') {
+            if (value.length <= 2) {
+                $('#parentName').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('#parentName').removeClass('is-invalid').addClass('is-valid');
             }
-            )
-        }
 
-        if (type === 'text' && id === 'parentName' && value.length >= 1) {
-            $('#parentName').on('input', function () {
-                if (value < 3) {
-                    $('#parentName').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('#parentName').removeClass('is-invalid').addClass('is-valid');
-                }
-            }
-            )
         }
 
         // after validation checking for format of object to save correctly to state
@@ -235,7 +210,6 @@ export default () => {
         firebase.auth().signInWithEmailAndPassword(state.GCuserEmail, state.GCpassword)
             .then((userCredential) => {
                 // Signed in
-                console.log('user = ', userCredential.user)
                 $('#before_signIn').removeClass('visible').addClass('invisible');
                 $('#after_signIn').removeClass('invisible').addClass('visible');
                 $("form#consentForm :input[type=text]").removeAttr('disabled');
@@ -263,7 +237,6 @@ export default () => {
                 })
                 if (compareEmail === state.parentEmail) {
                     await usersRef.set({ 'consentGiven': state.parentConsented, 'dateConsentGiven': Timestamp }, { merge: true })
-                    console.log('finished')
                     $('#consentBtn').prop('disabled', true);
                     setSuccess(true);
                 } else (
@@ -329,7 +302,7 @@ export default () => {
                                         onChange={getUserData}
                                     />
                                     <div className="invalid-feedback">
-                                        The password has at least 6 letters and/or numbers! Please check it on the email we sent you.
+                                        The password has at least 5 letters and/or numbers! Please check it on the email we sent you.
                             </div>
                                     <div className="valid-feedback">Password is the right format!</div>
                                 </div>

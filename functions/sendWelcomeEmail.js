@@ -20,7 +20,7 @@ exports.sendWelcomeEmail = functions.firestore
                 templateId: 'd-97f114a4b9aa40908584fe0d1208d86a',
                 dynamic_template_data: {
                     name: previousValue.fname,
-                    parentName: previousValue.pname
+                    parentName: previousValue.pName
                 }
             }
 

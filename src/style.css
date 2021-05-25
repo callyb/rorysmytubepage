@@ -10,19 +10,14 @@
   border-radius: 0.3rem;
 }
 
-.btn[class*='btn-outline-'] {
+.btn[id*='toVideos'] {
   border-radius: 0.5rem;
   padding-top: 0.2rem !important;
   padding-bottom: 0.2rem !important;
+  width: 25%;
+  font-size: 0.6em;
 }
 
-.toVidsBtn {
-  width: 60rem;
-}
-.title {
-  padding-top: 1em;
-  width: 100%;
-}
 .display {
   display: 'block' !important;
 }
@@ -42,7 +37,7 @@
 }
 
 .logo {
-  width: 30%;
+  width: 8rem;
 }
 
 .vid_container {
@@ -96,9 +91,16 @@
   width: 50%;
 }
 
-.msg {
+.msg,
+.msg2 {
   padding-top: 3em;
-  /* margin-bottom: 2em; */
+  margin-bottom: 1.5em;
+}
+.msg {
+  font-size: 2rem;
+}
+.msg2 {
+  font-size: 1.7rem;
 }
 
 .alt_div {
@@ -117,7 +119,31 @@
   .subscribeBtn {
     width: 75%;
   }
+  .pageLogo {
+    width: 100%;
+  }
+  .msg {
+    font-size: 1.5rem;
+  }
+  .msg2 {
+    font-size: 1.2rem;
+  }
 }
+
+@media only screen and (min-width: 700px) {
+  .btn[id*='toVideos'] {
+    font-size: 0.8em;
+  }
+  .logo {
+    width: 10rem;
+  }
+}
+/* 
+@media only screen and (min-width: 768px) {
+  .logo {
+    width: 60%;
+  }
+} */
 
 @media only screen and (max-width: 992px) {
   .subscribeBtn {
@@ -130,12 +156,11 @@
     font-size: 13px;
   }
 }
-
-@media only screen and (min-width: 768px) {
-  .description {
-    font-size: 1em;
+/* @media only screen and (min-width: 992px) {
+  .logo {
+    width: 15rem;
   }
-}
+} */
 
 @media only screen and (min-width: 1200px) {
   .wrap {
@@ -146,10 +171,16 @@
   h6 {
     font-size: 1.2em;
   }
+  .btn[id*='toVideos'] {
+    width: 30%;
+  }
 }
 
 @media only screen and (min-width: 1600px) {
   .xlarge_margin {
     max-width: 90%;
+  }
+  .btn[id*='toVideos'] {
+    width: 20%;
   }
 }

@@ -101,7 +101,7 @@ export default () => {
 
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
-            if (value.length <= 5) {
+            if (value.length <= 4) {
                 $('input[id=DSpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
                 $('input[id=DSpassword]').removeClass('is-invalid').addClass('is-valid');
@@ -110,35 +110,13 @@ export default () => {
 
         // detect if email and use regex to validate while it's being typed
         if (type === 'email') {
-            if (id === 'DSUserEmail') {
+            if (id === 'DSuserEmail') {
                 $('#DSuserEmail').on('input', function () {
                     if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
                         .test(value)) { $('input[id=DSuserEmail]').removeClass("is-invalid").addClass("is-valid"); }
                     else { $('input[id=DSuserEmail]').removeClass("is-valid").addClass("is-invalid"); }
                 });
             }
-        }
-        // detect if plain text and if so validate all based on not empty & minimum of 2 chars
-        if (type === 'text' && id === 'fname' && value.length >= 1) {
-            $('#fname').on('input', function () {
-                if (value < 3) {
-                    $('#fname').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('#fname').removeClass('is-invalid').addClass('is-valid');
-                }
-            }
-            )
-        }
-
-        if (type === 'text' && id === 'lname' && value.length >= 1) {
-            $('#lname').on('input', function () {
-                if (value < 3) {
-                    $('#lname').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('#lname').removeClass('is-invalid').addClass('is-valid');
-                }
-            }
-            )
         }
 
         // after validation checking for format of object to save correctly to state
@@ -185,7 +163,6 @@ export default () => {
         firebase.auth().signInWithEmailAndPassword(state.DSuserEmail, state.DSpassword)
             .then((userCredential) => {
                 // Signed in
-                console.log('user = ', userCredential.user)
                 $('#before_signIn2').removeClass('visible').addClass('invisible');
                 $('#after_signIn2').removeClass('invisible').addClass('visible');
                 updateState({ DCdisabled: '' });

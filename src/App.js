@@ -70,7 +70,7 @@ export default () => {
         </MDBRow>
         <MDBRow className="pt-2">
 
-          <VideoDetail video={selectedVideo} style={{ width: "100%" }} />
+          <VideoDetail video={selectedVideo} onSubmit={handleSubmit} style={{ width: "100%" }} />
 
           <MDBCol md="4">
             <VideoList videos={videos} onVideoSelect={setSelectedVideo} />

@@ -120,7 +120,7 @@ export default () => {
 
         // Detect if password and if so validate while it's being typed before saving it to state
         if (type === 'password') {
-            if (value.length <= 5) {
+            if (value.length <= 4) {
                 $('input[id=SFpassword]').removeClass('is-valid').addClass('is-invalid');
             } else {
                 $('input[id=SFpassword]').removeClass('is-invalid').addClass('is-valid');
@@ -145,37 +145,29 @@ export default () => {
 
         }
         // detect if plain text and if so validate all based on not empty & minimum of 2 chars
-        if (type === 'text' && id === 'fname' && value.length >= 2) {
-            $('#fname').on('input', function () {
-                if (value < 3) {
-                    $('input[id=fname]').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('input[id=fname]').removeClass('is-invalid').addClass('is-valid');
-                }
+        if (type === 'text' && id === 'fname') {
+            if (value.length <= 2) {
+                $('input[id=fname]').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('input[id=fname]').removeClass('is-invalid').addClass('is-valid');
             }
-            )
         }
 
-        if (type === 'text' && id === 'lname' && value.length >= 2) {
-            $('#lname').on('input', function () {
-                if (value < 3) {
-                    $('input[id=lname]').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('input[id=lname]').removeClass('is-invalid').addClass('is-valid');
-                }
+        if (type === 'text' && id === 'lname') {
+            if (value.length <= 2) {
+                $('input[id=lname]').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('input[id=lname]').removeClass('is-invalid').addClass('is-valid');
             }
-            )
+
         }
 
-        if (type === 'text' && id === 'pName' && value.length >= 2) {
-            $('#pName').on('input', function () {
-                if (value < 3) {
-                    $('input[id=pName]').removeClass('is-valid').addClass('is-invalid');
-                } else {
-                    $('input[id=pName]').removeClass('is-invalid').addClass('is-valid');
-                }
+        if (type === 'text' && id === 'pName') {
+            if (value.length <= 2) {
+                $('input[id=pName]').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('input[id=pName]').removeClass('is-invalid').addClass('is-valid');
             }
-            )
         }
 
         // after validation checking for format of object to save correctly to state
@@ -204,7 +196,7 @@ export default () => {
             })
         }
 
-    }, [],
+    }, []
     );
 
     const handleSubmit = e => {
@@ -214,9 +206,7 @@ export default () => {
             e.target.className += ' was-validated';
 
         } else if ($('input[type=password]').hasClass('is-valid')) {
-            const check = $('input[type=password]').hasClass('is-valid');
             e.target.className += ' was-validated';
-            console.log('subscribe = ', state, 'passwordInput = ', check)
             SaveUser(state)
 
         }
