@@ -42,7 +42,7 @@ export default ({ video }) => {
     checkCounts();
     setLikeBtnDisabled(undefined);
     setDislikeBtnDisabled(undefined);
-  }, [video])
+  }, [])
 
   const checkCounts = () => {
     let useThisVideoSrc = '';
