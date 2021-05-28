@@ -5,11 +5,12 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0",
     "firebase": "^7.7.0",
     "firebase-admin": "^9.7.0",
     "firebase-functions": "^3.13.2",
+    "handlebars": "^4.7.7",
     "intl": "^1.2.5",
     "jquery": "^3.6.0",
     "lottie-react-web": "^2.2.2",
