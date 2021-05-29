@@ -41,7 +41,7 @@ class ManageUser extends Component {
                         </MDBNavItem>
                         <MDBNavItem>
                             <MDBNavLink link to="#" active={this.state.activeItem === "4"} onClick={this.toggle("4")} role="tab" >
-                                Delete User
+                                Delete Subscriber
             </MDBNavLink>
                         </MDBNavItem>
                     </MDBNav>

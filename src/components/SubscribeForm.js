@@ -291,7 +291,7 @@ export default () => {
                                     <label
                                         htmlFor='SFuserEmail'
                                     >
-                                        Child's Email address
+                                        Your Email address
                             </label>
                                     <input
                                         name="SFuserEmail"
@@ -311,7 +311,7 @@ export default () => {
                                         htmlFor='SFpassword'
                                         className='grey-text'
                                     >
-                                        Enter a password
+                                        Enter a password (with at least 5 letters/numbers)
                             </label>
                                     <input
                                         name="SFpassword"
@@ -328,34 +328,7 @@ export default () => {
                                     <div className="valid-feedback">Password is the right format!</div>
                                 </div>
                             </div>
-                            <MDBRow className="mt-5">
-                                <MDBCol size="1"></MDBCol>
-                                <MDBCol size="10" className="border border-dark rounded py-3">
-                                    <div >
-                                        <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
-                                    </div>
 
-                                    <div className='custom-control custom-checkbox pl-3'>
-                                        <input
-                                            className='custom-control-input'
-                                            type='checkbox'
-                                            value={state.consent || ''}
-                                            id='consent'
-                                            name='consent'
-                                            onChange={getUserData}
-                                            checked={state.consent}
-                                            required={requireConsent}
-                                            disabled={disableConsent}
-                                        />
-                                        <label className='custom-control-label' htmlFor='consent'>
-                                            Please use my details to update me on new videos - I am over 13
-                                </label>
-                                        <div className='invalid-feedback'>
-                                            Either tick this box or the one that says 'under 13's' please
-                                </div>
-                                    </div>
-                                </MDBCol>
-                            </MDBRow>
                             <MDBRow className='mt-3'>
                                 <MDBCol size="1"></MDBCol>
                                 <MDBCol size="10" className="border border-dark rounded py-3">
@@ -421,6 +394,34 @@ export default () => {
                                             Please provide your parent's actual email address!  Thank you!.
                                 </div>
                                         <div className="valid-feedback">Yup, that's an email address!</div>
+                                    </div>
+                                </MDBCol>
+                            </MDBRow>
+                            <MDBRow className="mt-5">
+                                <MDBCol size="1"></MDBCol>
+                                <MDBCol size="10" className="border border-dark rounded py-3">
+                                    <div >
+                                        <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
+                                    </div>
+
+                                    <div className='custom-control custom-checkbox pl-3'>
+                                        <input
+                                            className='custom-control-input'
+                                            type='checkbox'
+                                            value={state.consent || ''}
+                                            id='consent'
+                                            name='consent'
+                                            onChange={getUserData}
+                                            checked={state.consent}
+                                            required={requireConsent}
+                                            disabled={disableConsent}
+                                        />
+                                        <label className='custom-control-label' htmlFor='consent'>
+                                            Please use my details to update me on new videos - I am over 13
+                                </label>
+                                        <div className='invalid-feedback'>
+                                            Either tick this box or the one that says 'under 13's' please
+                                </div>
                                     </div>
                                 </MDBCol>
                             </MDBRow>
