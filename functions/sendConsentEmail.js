@@ -17,7 +17,7 @@ exports.sendConsentEmail = functions.firestore
 
         const msg = {
             to: '567turtle@rorysmytube.com', // Change to your recipient
-            bcc: email,
+            bcc: parentEmail,
             from: '567turtle@rorysmytube.com', // Change to your verified sender
             subject: `${parentName}, Your child would like to receive updates from RorysMytube`,
             templateId: 'd-1d9d4a1f48424b72bf74842706f66237',
