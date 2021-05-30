@@ -26,22 +26,22 @@ class ManageUser extends Component {
                     <MDBNav className="nav-tabs">
                         <MDBNavItem>
                             <MDBNavLink link to="#" active={this.state.activeItem === "1"} onClick={this.toggle("1")} role="tab" >
-                                Subscribe
+                                Subscribe to RorysMytube
            </MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
                             <MDBNavLink link to="#" active={this.state.activeItem === "2"} onClick={this.toggle("2")} role="tab" >
-                                Consent
+                                Give Parent's Consent
             </MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
                             <MDBNavLink link to="#" active={this.state.activeItem === "3"} onClick={this.toggle("3")} role="tab" >
-                                Change Email
+                                Change your Email
             </MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
                             <MDBNavLink link to="#" active={this.state.activeItem === "4"} onClick={this.toggle("4")} role="tab" >
-                                Delete Subscriber
+                                Delete Your Subscription
             </MDBNavLink>
                         </MDBNavItem>
                     </MDBNav>

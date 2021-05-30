@@ -174,7 +174,7 @@ export default () => {
                                     <label
                                         htmlFor='CEuserEmail'
                                     >
-                                        Subscriber's Email address
+                                        Your Email address (the one you subscribed with!)
                                         </label>
                                     <input
                                         name="CEuserEmail"
@@ -193,7 +193,7 @@ export default () => {
                                     <label
                                         htmlFor='newEmail'
                                     >
-                                        Subscriber's New Email address
+                                        Your New Email address (the one you want to change to!)
                                         </label>
                                     <input
                                         name="newEmail"
@@ -213,7 +213,7 @@ export default () => {
                                         htmlFor='CEpassword'
                                         className='grey-text'
                                     >
-                                        Subscriber's password
+                                        Your password
                                         </label>
                                     <input
                                         name="CEpassword"

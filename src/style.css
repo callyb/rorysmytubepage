@@ -1,6 +1,11 @@
 .wrapper {
   padding-left: 1em;
 }
+
+.nav {
+  display: flex;
+  align-items: center !important;
+}
 .nav-tabs {
   background-color: #bbdefb;
   padding: 0.3rem;
@@ -8,6 +13,9 @@
 }
 .nav-item {
   border-radius: 0.3rem;
+  font-size: 0.8em;
+  font-weight: bold;
+  border: 1px solid #b3bfdb;
 }
 
 .btn[id*='toVideos'] {
