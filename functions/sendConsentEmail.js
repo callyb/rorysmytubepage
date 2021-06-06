@@ -15,30 +15,32 @@ exports.sendConsentEmail = functions.firestore
         const parentName = snap.data().pName;
         const parentEmail = snap.data().parentEmail;
 
-        const msg = {
-            to: '567turtle@rorysmytube.com', // Change to your recipient
-            bcc: parentEmail,
-            from: '567turtle@rorysmytube.com', // Change to your verified sender
-            subject: `${parentName}, Your child would like to receive updates from RorysMytube`,
-            templateId: 'd-1d9d4a1f48424b72bf74842706f66237',
-            dynamic_template_data: {
-                parentName,
-                name,
-                lastName,
-                email,
-                parentEmail,
-                password
+        if (snap.data().parentConsent) {
+            const msg = {
+                to: '567turtle@rorysmytube.com', // Change to your recipient
+                bcc: parentEmail,
+                from: '567turtle@rorysmytube.com', // Change to your verified sender
+                subject: `${parentName}, Your child would like to receive updates from RorysMytube`,
+                templateId: 'd-1d9d4a1f48424b72bf74842706f66237',
+                dynamic_template_data: {
+                    parentName,
+                    name,
+                    lastName,
+                    email,
+                    parentEmail,
+                    password
 
+                }
             }
-        }
 
-        return sgMail
-            .send(msg)
-            .then(() => {
-                console.log('Email sent')
-            })
-            .catch((error) => {
-                console.error(error)
-            })
+            return sgMail
+                .send(msg)
+                .then(() => {
+                    console.log('Email sent')
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        }
 
     })

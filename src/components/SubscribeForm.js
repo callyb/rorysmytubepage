@@ -446,7 +446,7 @@ export default () => {
                                             required={requireConsent}
                                             disabled={disableConsent}
                                         />
-                                        <label className='custom-control-label' htmlFor='consent'>
+                                        <label className='custom-control-label grey-text' htmlFor='consent'>
                                             Please use my details to update me on new videos - I am over 13
                                 </label>
                                         <div className='invalid-feedback'>

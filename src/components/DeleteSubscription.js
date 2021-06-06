@@ -59,7 +59,7 @@ export default () => {
     const [alert3, setAlert3] = useState(false);
 
     const [success, setSuccess] = useState(false);
-    const [disableDeleteBtn, setDisableDeleteBtn] = useState('');
+    const [disableDeleteBtn, setDisableDeleteBtn] = useState(false);
 
     const [state, updateState] = useReducer(enhancedReducer, initialState);
     const db = firebase.firestore();
@@ -92,7 +92,7 @@ export default () => {
                     [name]: !prevState[name],
 
                 }))
-
+                setDisableDeleteBtn('disabled');
                 return
 
             }
@@ -190,7 +190,6 @@ export default () => {
 
             user.delete().then(function () {
                 // User deleted.
-                setDisableDeleteBtn('disabled');
                 setSuccess(true)
             }).catch(function (error) {
                 // An error happened.
@@ -325,7 +324,7 @@ export default () => {
                             <div className='d-flex align-items-center justify-content-center'>
 
                                 <div>
-                                    <MDBBtn color='red' id='deleteBtn' type='submit' style={{ color: 'white' }}>
+                                    <MDBBtn color='red' id='deleteBtn' type='submit' disabled={disableDeleteBtn} style={{ color: 'white' }}>
                                         Delete your subscription
                                 </MDBBtn>
                                 </div>
