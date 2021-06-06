@@ -266,7 +266,7 @@ export default () => {
                             <div><p style={{ fontSize: '.8em' }}>Please confirm your child's subscription with their email address and password (as shown in the email from us requesting your consent). This will make sure your consent is linked to their subscription, then you can complete the consent part of the form - Thank you!</p></div>
 
                             <div id='signIn' className='mb-2'>
-                                <div id='emailContainer'>
+                                <div id='emailContainer' className='mb-4'>
                                     <label
                                         htmlFor='GCuserEmail'
                                     >
@@ -285,7 +285,7 @@ export default () => {
                                 </div>
                                     <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
-                                <div id='passwordContainer'>
+                                <div id='passwordContainer' className='mb-4'>
                                     <label
                                         htmlFor='GCpassword'
                                         className='grey-text'
@@ -359,7 +359,7 @@ export default () => {
                                     </div>
                                 </MDBCol>
                             </MDBRow>
-                            <div id='pNameContainer'>
+                            <div id='pNameContainer' className='mb-4'>
                                 <label
                                     htmlFor='parentName'
                                 >
@@ -380,7 +380,7 @@ export default () => {
                                 </div>
                                 <div className="valid-feedback">Looks good!</div>
                             </div>
-                            <div id='parentEmailContainer'>
+                            <div id='parentEmailContainer' className='mb-4'>
                                 <label
                                     htmlFor='parentEmail'
                                 >

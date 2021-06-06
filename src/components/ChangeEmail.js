@@ -170,7 +170,7 @@ export default () => {
                             <div><p style={{ fontSize: '.8em' }}>Please enter your email address and password to confirm your subscription</p></div>
 
                             <div id='signIn' className='mb-2'>
-                                <div id='emailContainer'>
+                                <div id='emailContainer' className='mb-4'>
                                     <label
                                         htmlFor='CEuserEmail'
                                     >
@@ -189,7 +189,7 @@ export default () => {
                                     </div>
                                     <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
-                                <div id='newEmailContainer'>
+                                <div id='newEmailContainer' className='mb-4'>
                                     <label
                                         htmlFor='newEmail'
                                     >
@@ -208,7 +208,7 @@ export default () => {
                                     </div>
                                     <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
-                                <div id='passwordContainer'>
+                                <div id='passwordContainer' className='mb-4'>
                                     <label
                                         htmlFor='CEpassword'
                                         className='grey-text'

@@ -25,6 +25,10 @@
   width: 25%;
   font-size: 0.6em;
 }
+.tip {
+  background-color: white;
+  color: blue;
+}
 
 .display {
   display: 'block' !important;

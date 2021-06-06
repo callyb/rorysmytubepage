@@ -221,11 +221,11 @@ export default () => {
                             <div><p style={{ fontSize: '.8em' }}>Please enter your email address and password to confirm your subscription</p></div>
 
                             <div id='signIn' className='mb-2'>
-                                <div id='emailContainer'>
+                                <div id='emailContainer' className='mb-4'>
                                     <label
                                         htmlFor='DSuserEmail'
                                     >
-                                        Subscriber's Email address
+                                        Your Email address
                                         </label>
                                     <input
                                         name="DSuserEmail"
@@ -240,12 +240,12 @@ export default () => {
                                     </div>
                                     <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
-                                <div id='passwordContainer'>
+                                <div id='passwordContainer' className='mb-4'>
                                     <label
                                         htmlFor='DSpassword'
                                         className='grey-text'
                                     >
-                                        Subscriber's password
+                                        Your password
                                         </label>
                                     <input
                                         name="DSpassword"

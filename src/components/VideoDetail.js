@@ -13,7 +13,7 @@ export default ({ video }) => {
   if (!video) return <HomePage />
 
   // change code
-  const db = firebase.firestore().collection('mytubePage').doc('data').collection('videos');
+  const db = firebase.firestore().collection('mytubePage');
   const videoSrc = video.snippet.resourceId.videoId;
   const description = video.snippet.description;
 

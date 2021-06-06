@@ -1,5 +1,5 @@
 import React, { useCallback, useReducer, useState } from 'react';
-import { MDBRow, MDBCol, MDBBtn, MDBAlert } from 'mdbreact';
+import { MDBRow, MDBCol, MDBBtn, MDBAlert, MDBTooltip } from 'mdbreact';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import produce from 'immer'
@@ -58,6 +58,8 @@ export default () => {
     const [disableConsent, setDisableConsent] = useState(undefined);
     const [requirePConsent, setRequirePConsent] = useState(undefined);
     const [disablePConsent, setDisablePConsent] = useState(undefined);
+    const [clearFormDisabled, setClearFormDisabled] = useState(undefined);
+
     const [state, updateState] = useReducer(enhancedReducer, initialState);
 
     var Timestamp = firebase.firestore.Timestamp.fromDate(new Date());
@@ -203,10 +205,10 @@ export default () => {
         e.preventDefault();
         // check form is fully validated before saving user
         if ($('input[type=password]').hasClass('is-invalid')) {
-            e.target.className += ' was-validated';
+            e.target.className += 'was-validated';
 
         } else if ($('input[type=password]').hasClass('is-valid')) {
-            e.target.className += ' was-validated';
+            e.target.className += 'was-validated';
             SaveUser(state)
 
         }
@@ -222,6 +224,7 @@ export default () => {
                 // add only required user info incl uid to 'users' collection
                 firebase.firestore().collection('users').doc(user.uid).set({ 'fname': state.fname, 'lname': state.lname, 'email': state.SFuserEmail, 'consent': state.consent, 'parentConsentRequired': state.parentConsent, 'parentEmail': state.parentEmail, 'pName': state.pName, 'password': state.SFpassword, 'DateFirstSubscribed': Timestamp })
                 setDisableSubmit(true);
+                setClearFormDisabled(true);
                 // setSuccess with success/completed message
                 setSuccess(true);
             }).catch((error) => {
@@ -230,6 +233,33 @@ export default () => {
                 // setAlert with error message & code
                 setAlert(true);
             })
+
+    }
+
+    const ClearForm = () => {
+
+        updateState({
+            fname: '',
+            lname: '',
+            SFuserEmail: '',
+            SFpassword: '',
+            consent: '',
+            PCdisabled: '',
+            Cdisabled: '',
+            PCrequired: 'required',
+            Crequired: 'required',
+            parentConsent: '',
+            pName: '',
+            parentEmail: ''
+        });
+        setDisableSubmit(undefined);
+        setRequireConsent(undefined);
+        setDisableConsent(undefined);
+        setRequirePConsent(undefined);
+        setDisablePConsent(undefined);
+
+        $('input').removeClass("is-valid is-invalid")
+        $('form').removeClass("was-validated")
 
     }
 
@@ -248,7 +278,7 @@ export default () => {
                             </div>
                             <div><p style={{ fontSize: '.8em' }}>Please fill in all the boxes then fill in the box that has your age at the top (you can only choose one or the other, and if you're under 13 we need you to pick the second box that says that)  Thank you!</p></div>
                             <div>
-                                <div id='fnameContainer'>
+                                <div id='fnameContainer' className='mb-4'>
                                     <label
                                         htmlFor='fname'
                                     >
@@ -268,7 +298,7 @@ export default () => {
                         </div>
                                     <div className="valid-feedback">Looks good!</div>
                                 </div>
-                                <div id='lnameContainer'>
+                                <div id='lnameContainer' className='mb-4'>
                                     <label
                                         htmlFor='lname'
                                     >
@@ -287,7 +317,7 @@ export default () => {
                         </div>
                                     <div className="valid-feedback">Looks good!</div>
                                 </div>
-                                <div id='emailContainer'>
+                                <div id='emailContainer' className='mb-4'>
                                     <label
                                         htmlFor='SFuserEmail'
                                     >
@@ -306,7 +336,7 @@ export default () => {
                                 </div>
                                     <div className="valid-feedback">Yup, that's an email address!</div>
                                 </div>
-                                <div id='passwordContainer'>
+                                <div id='passwordContainer' className='mb-4 pb-4'>
                                     <label
                                         htmlFor='SFpassword'
                                         className='grey-text'
@@ -331,7 +361,7 @@ export default () => {
 
                             <MDBRow className='mt-3'>
                                 <MDBCol size="1"></MDBCol>
-                                <MDBCol size="10" className="border border-dark rounded py-3">
+                                <MDBCol size="10" className="border border-dark rounded py-4">
                                     <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>UNDER 13'S...</p>
 
                                     <div className='custom-control custom-checkbox pl-3'>
@@ -353,7 +383,7 @@ export default () => {
                                             You must get your parent's permission if you're under 13, we have to check with them - it's the law! (if you're over 13, check the other box above!)
                                 </div>
                                     </div>
-                                    <div id='pNameContainer'>
+                                    <div id='pNameContainer' className='my-4'>
                                         <label
                                             htmlFor='pName'
                                         >
@@ -374,7 +404,7 @@ export default () => {
                                 </div>
                                         <div className="valid-feedback">Looks good!</div>
                                     </div>
-                                    <div id='pEmailContainer'>
+                                    <div id='pEmailContainer' className='mb-4'>
                                         <label
                                             htmlFor='parentEmail'
                                         >
@@ -399,7 +429,7 @@ export default () => {
                             </MDBRow>
                             <MDBRow className="mt-5">
                                 <MDBCol size="1"></MDBCol>
-                                <MDBCol size="10" className="border border-dark rounded py-3">
+                                <MDBCol size="10" className="border border-dark rounded py-4">
                                     <div >
                                         <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>OVER 13'S...</p>
                                     </div>
@@ -444,6 +474,18 @@ export default () => {
                             <MDBRow>
                                 <MDBCol size="12" className='d-flex justify-content-center pt-5'>
                                     <div>
+                                        <MDBTooltip
+                                            domElement
+                                            tag="span"
+                                            placement="top"
+
+                                        >
+                                            <MDBBtn color='warning' id='ClearForm' disabled={clearFormDisabled} onClick={ClearForm}>
+                                                Clear Form
+                                        </MDBBtn>
+                                            <span>Are you sure you want to clear the form of all the info you put in?!  Only do this if you want to start again!</span>
+                                        </MDBTooltip>
+
                                         <MDBBtn color='primary' id='SubscribeBtn' disabled={disableSubmit} type='submit'>
                                             Submit Form
                             </MDBBtn>
