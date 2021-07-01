@@ -7,17 +7,19 @@ sgMail.setApiKey(SENDGRID_API_KEY)
 //Creating a Firebase Cloud Function
 exports.sendWelcomeEmailAdult = functions.firestore
     .document('users/{userID}')
-    .onCreate(async (snap, context) => {
+    .onCreate((snap, context) => {
         // Data before update and after update
         const firstName = snap.data().fname;
         const lastName = snap.data().lname;
+        const email = snap.data().email;
+
         if (snap.data().consent) {
             const msg = {
                 to: '567turtle@rorysmytube.com', // Change to your recipient
-                bcc: snap.data().email,
+                bcc: email,
                 from: '567turtle@rorysmytube.com', // Change to your verified sender
                 subject: 'Welcome!',
-                templateId: 'd03deb05e4194c1c8e7199450020729b',
+                templateId: 'd-d03deb05e4194c1c8e7199450020729b',
                 dynamic_template_data: {
                     firstName,
                     lastName

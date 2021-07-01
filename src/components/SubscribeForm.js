@@ -276,7 +276,7 @@ export default () => {
                             <div className='d-flex align-items-center justify-content-center'>
                                 <p className='mb-1' style={{ fontSize: '1em', fontWeight: 'bold' }}>Subscribe to rorysmytube</p>
                             </div>
-                            <div><p style={{ fontSize: '.8em' }}>Please fill in all the boxes then fill in the box that has your age at the top (you can only choose one or the other, and if you're under 13 we need you to pick the second box that says that)  Thank you!</p></div>
+                            <div><p style={{ fontSize: '.8em' }}>Please fill in all the boxes then fill in the box that has your age at the top (you can only choose one or the other, and if you're under 13 we need you to pick the box that says that)  Thank you!</p></div>
                             <div>
                                 <div id='fnameContainer' className='mb-4'>
                                     <label
