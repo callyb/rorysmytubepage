@@ -7,8 +7,7 @@ exports.moveRecord = functions.firestore
     .onUpdate(async (change, context) => {
         const previousValue = change.before.data();
         const newValue = change.after.data();
-        const uid = previousValue.uid;
-
+        const uid = context.params.uid;
         // define the delete function
         const deleteDoc = async => {
             const docRef = admin.firestore().doc('users/{userID}');
@@ -27,8 +26,7 @@ exports.moveRecord = functions.firestore
             // document exists, create the new item
             await admin
                 .firestore()
-                .collection('mistakes')
-                .doc(previousValue.uid)
+                .doc(`mistakes/${uid}`)
                 .set({ ...previousValue })
                 .catch((error) => {
                     console.error('Error creating document', JSON.stringify(error));

@@ -28,7 +28,8 @@
     "validator": "^13.6.0"
   },
   "devDependencies": {
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "follow-redirects": ">=1.14.7"
   },
   "scripts": {
     "dev": "react-scripts start",
