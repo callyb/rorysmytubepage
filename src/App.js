@@ -1,85 +1,56 @@
-import React, { useState } from "react";
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
-import youtube from "./api/youtube";
-import firebase from "../src/firebase";
-import 'firebase/firestore';
-import { SearchBar, VideoList, VideoDetail } from "./components";
+import React, { useState, useEffect } from "react";
+import MainApplication from './components/MainApplication';
 
-export default () => {
-
-  const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-
-  const getInfo = async () => {
-
-    return await youtube.get('search', {
-      params: {
-        part: "snippet",
-        type: "video",
-        maxResults: 50,
-        key: process.env.REACT_APP_API_KEY,
-        playlistId: process.env.REACT_APP_PLAYLIST_ID,
-        rel: 0
-      }
-    })
-      .catch((error) => {
-        /*
-               * The request was made and the server responded with a
-               * status code that falls out of the range of 2xx
-               */
-        if (error.response) {
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-
-        } else if (error.request) {
-          /*
-           * The request was made but no response was received, `error.request`
-           * is an instance of XMLHttpRequest in the browser and an instance
-           * of http.ClientRequest in Node.js
-           */
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request and triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-
-      }
-
-      )
-
+function subdomainApplications(map) {
+  let main = map.find((item) => item.main);
+  if (!main) {
+    throw new Error('Must set main flag to true on at least one subdomain app');
   }
 
-  const handleSubmit = async () => {
-    const { data: { items: videos } } = await getInfo()
-    let sorted = videos.sort((a, b) => new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt));
-    setVideos(sorted);
-    setSelectedVideo(sorted[0]);
+  return function getComponent() {
+    const parts = window.location.hostname.split('.');
 
-  };
+    let last_index = -2;
+    const last = parts[parts.length - 1];
+    const is_localhost = last === 'localhost';
+    if (is_localhost) {
+      last_index = -1;
+    }
 
+    const subdomain = parts.slice(0, last_index).join('.');
+
+    if (!subdomain) {
+      return main.application;
+    }
+
+    const app = map.find(({ subdomains }) => subdomains.includes(subdomain));
+    if (app) {
+      return app.application;
+    } else {
+      return main.application;
+    }
+  }
+}
+
+const getApp = subdomainApplications([
+  {
+    subdomains: ['www'],
+    application: function () {
+      return <MainApplication />
+    },
+    main: true
+  },
+  {
+    subdomains: ['SchoolProject'],
+    application: function () {
+      return 'SchoolProject!';
+    }
+  }
+]);
+
+export default function App() {
+  const App = getApp();
   return (
-    <div>
-
-      <MDBContainer fluid className="container-fluid justify-content-center">
-        <MDBRow>
-          <MDBCol md="12">
-            <SearchBar onSubmit={handleSubmit} />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="pt-2">
-
-          <VideoDetail video={selectedVideo} onSubmit={handleSubmit} style={{ width: "100%" }} />
-
-          <MDBCol md="4">
-            <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-
-    </div>
-
+    <App className="Application" />
   );
-
 }
